@@ -12,6 +12,8 @@
 // Data 			: marzec 2010
 // Autor 			: Miros³aw Kardaœ
 //----------------------------------------------------------------------------------------------------------
+
+
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <avr/eeprom.h>
@@ -19,7 +21,10 @@
 #include <stdlib.h>
 #include <util/delay.h>
 
-#include "lcd44780.h"
+#include "../LCD_buf/lcd44780.h"
+
+volatile char lcd_buf[LCD_Y][LCD_X];
+volatile uint8_t cur_x, cur_y;
 
 // makrodefinicje operacji na sygna³ach steruj¹cych RS,RW oraz E
 
@@ -127,45 +132,6 @@ void _lcd_write_byte(unsigned char _data)
 
 }
 
-#if USE_RW == 1
-//----------------------------------------------------------------------------------------
-//
-//		 Odczyt bajtu z wyœwietlacza LCD
-//
-//----------------------------------------------------------------------------------------
-uint8_t _lcd_read_byte(void)
-{
-	uint8_t result=0;
-	data_dir_in();
-
-	SET_RW;
-
-	SET_E;
-	result = (lcd_readHalf() << 4);	// odczyt starszej czêœci bajtu z LCD D7..D4
-	CLR_E;
-
-	SET_E;
-	result |= lcd_readHalf();			// odczyt m³odszej czêœci bajtu z LCD D3..D0
-	CLR_E;
-
-	return result;
-}
-#endif
-
-
-#if USE_RW == 1
-//----------------------------------------------------------------------------------------
-//
-//		 Sprawdzenie stanu Busy Flag (Zajêtoœci wyœwietlacza)
-//
-//----------------------------------------------------------------------------------------
-uint8_t check_BF(void)
-{
-	CLR_RS;
-	return _lcd_read_byte();
-}
-#endif
-
 
 //----------------------------------------------------------------------------------------
 //
@@ -205,7 +171,14 @@ void lcd_write_data(uint8_t data)
 //----------------------------------------------------------------------------------------
 void lcd_char(char c)
 {
-	lcd_write_data( ( c>=0x80 && c<=0x87 ) ? (c & 0x07) : c);
+	lcd_buf[cur_y][cur_x] = c;
+
+	if(cur_x < LCD_X-1) cur_x++;
+	else
+	{
+		cur_x = 0;
+		if(cur_y < LCD_Y-1) cur_y++;
+	}
 }
 #endif
 
@@ -221,7 +194,7 @@ void lcd_str(char * str)
 {
 	register char znak;
 	while ( (znak=*(str++)) )
-		lcd_write_data( ( znak>=0x80 && znak<=0x87 ) ? (znak & 0x07) : znak);
+		lcd_char(znak);
 }
 
 #if USE_LCD_STR_P == 1
@@ -237,7 +210,7 @@ void lcd_str_P(char * str)
 {
 	register char znak;
 	while ( (znak=pgm_read_byte(str++)) )
-		lcd_write_data( ( (znak>=0x80) && (znak<=0x87) ) ? (znak & 0x07) : znak);
+		lcd_char(znak);
 }
 #endif
 
@@ -258,7 +231,7 @@ void lcd_str_E(char * str)
 	{
 		znak=eeprom_read_byte( (uint8_t *)(str++) );
 		if(!znak || znak==0xFF) break;
-		else lcd_write_data( ( (znak>=0x80) && (znak<=0x87) ) ? (znak & 0x07) : znak);
+		else lcd_char(znak);
 	}
 }
 #endif
@@ -372,22 +345,8 @@ void lcd_defchar_E(uint8_t nr, uint8_t *def_znak)
 //----------------------------------------------------------------------------------------
 void lcd_locate(uint8_t y, uint8_t x)
 {
-	switch(y)
-	{
-		case 0: y = LCD_LINE1; break;
-
-#if (LCD_Y>1)
-	    case 1: y = LCD_LINE2; break; // adres 1 znaku 2 wiersza
-#endif
-#if (LCD_Y>2)
-    	case 2: y = LCD_LINE3; break; // adres 1 znaku 3 wiersza
-#endif
-#if (LCD_Y>3)
-    	case 3: y = LCD_LINE4; break; // adres 1 znaku 4 wiersza
-#endif
-	}
-
-	lcd_write_cmd( (0x80 + y + x) );
+	cur_x = x;
+	cur_y = y;
 }
 #endif
 
@@ -399,11 +358,15 @@ void lcd_locate(uint8_t y, uint8_t x)
 //----------------------------------------------------------------------------------------
 void lcd_cls(void)
 {
-	lcd_write_cmd( LCDC_CLS );
-
-	#if USE_RW == 0
-		_delay_ms(4.9);
-	#endif
+	int i,j;
+	for(i=0; i<LCD_X; i++)
+	{
+		for(j=0;j<LCD_Y; j++)
+		{
+			lcd_buf[j][i] = ' ';
+		}
+	}
+	cur_x = cur_y = 0;
 }
 
 
@@ -415,60 +378,9 @@ void lcd_cls(void)
 //----------------------------------------------------------------------------------------
 void lcd_home(void)
 {
-	lcd_write_cmd( LCDC_CLS|LCDC_HOME );
-
-	#if USE_RW == 0
-		_delay_ms(4.9);
-	#endif
+	cur_x = cur_y = 0;
 }
 #endif
-
-#if USE_LCD_CURSOR_ON == 1
-//----------------------------------------------------------------------------------------
-//
-//		W³¹czenie kursora na LCD
-//
-//----------------------------------------------------------------------------------------
-void lcd_cursor_on(void)
-{
-	lcd_write_cmd( LCDC_ONOFF|LCDC_DISPLAYON|LCDC_CURSORON);
-}
-
-//----------------------------------------------------------------------------------------
-//
-//		Wy³¹czenie kursora na LCD
-//
-//----------------------------------------------------------------------------------------
-void lcd_cursor_off(void)
-{
-	lcd_write_cmd( LCDC_ONOFF|LCDC_DISPLAYON);
-}
-#endif
-
-
-#if USE_LCD_CURSOR_BLINK == 1
-//----------------------------------------------------------------------------------------
-//
-//		W£¹cza miganie kursora na LCD
-//
-//----------------------------------------------------------------------------------------
-void lcd_blink_on(void)
-{
-	lcd_write_cmd( LCDC_ONOFF|LCDC_DISPLAYON|LCDC_CURSORON|LCDC_BLINKON);
-}
-
-//----------------------------------------------------------------------------------------
-//
-//		WY³¹cza miganie kursora na LCD
-//
-//----------------------------------------------------------------------------------------
-void lcd_blink_off(void)
-{
-	lcd_write_cmd( LCDC_ONOFF|LCDC_DISPLAYON);
-}
-#endif
-
-
 
 
 //----------------------------------------------------------------------------------------
@@ -496,7 +408,6 @@ void lcd_init(void)
 
 	_delay_ms(15);
 	PORT(LCD_RSPORT) &= ~(1<<LCD_RS);
-	PORT(LCD_RWPORT) &= ~(1<<LCD_RW);
 
 	// jeszcze nie mo¿na u¿ywaæ Busy Flag
 	lcd_sendHalf(LCDC_FUNC|LCDC_FUNC8B);
@@ -518,4 +429,42 @@ void lcd_init(void)
 
 	// kasowanie ekranu
 	lcd_cls();
+
+	/*Timer1 50Hz for lcd*/
+		TCCR1B |= (1<<WGM12)|(1<<CS12); // CTC 256-prescaler
+		OCR1A = 1249; //for 50Hz
+		TIMSK1 |= (1<<OCIE1A); //Timer start
+}
+
+ISR(TIMER1_COMPA_vect)
+{
+	uint8_t i,j,y;
+	char znak;
+//	lcd_write_cmd( LCDC_CLS|LCDC_HOME );
+	for(j=0; j<LCD_Y; j++)
+	{
+		switch(j)
+		{
+		case 0: y = LCD_LINE1; break;
+
+		#if (LCD_Y>1)
+			    case 1: y = LCD_LINE2; break; // adres 1 znaku 2 wiersza
+		#endif
+		#if (LCD_Y>2)
+		    	case 2: y = LCD_LINE3; break; // adres 1 znaku 3 wiersza
+		#endif
+		#if (LCD_Y>3)
+		    	case 3: y = LCD_LINE4; break; // adres 1 znaku 4 wiersza
+		#endif
+		}
+
+		lcd_write_cmd(0x80 + y);
+
+		for(i=0; i<LCD_X; i++)
+		{
+			//send to lcd
+			znak = lcd_buf[j][i];
+			lcd_write_data(znak);
+		}
+	}
 }

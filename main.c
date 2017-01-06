@@ -8,8 +8,14 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
-#include "LCD/lcd44780.h"
+#include "LCD_buf/lcd44780.h"
 #include "MK_ENCODER/mk_encoder.h"
+
+//#define LED_PIN (1<<PB5)
+//#define LED_PORT PORTB
+//#define LED_DDR DDRB
+//
+//#define LED_TOGGLE LED_PORT ^= LED_PIN
 
 void clear()
 {
@@ -20,28 +26,31 @@ void clear()
 
 int main(void)
 {
+//	LED_DDR |= LED_PIN;
+
 	lcd_init();
-	lcd_cls();
-	lcd_str("gitara siema");
+
+	sei();
+
+	lcd_str("  pH regulator");
+	lcd_locate(1,0);
+	lcd_str("   Termostat");
 	_delay_ms(1000);
 
 	encoder_init(1);
-
 	register_sw_callback(clear);
-
 	int i=0;
-	sei();
 		while(1)
 		{
+
 			ENCODER_EVENT();
 			lcd_cls();
-			lcd_int(enc_left);
-			lcd_locate(0,3);
-			lcd_int(enc_right);
-			lcd_locate(0,6);
-			lcd_int(enc_timer);
-			lcd_locate(1,3);
-			lcd_int(enc_right);
 			lcd_int(i++);
+
+//			LED_TOGGLE;
+			_delay_ms(50);
 		}
 }
+
+
+

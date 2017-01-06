@@ -32,10 +32,6 @@
 #define LCD_Y 2		// iloœæ wierszy wyœwietlacza LCD
 #define LCD_X 16	// iloœæ kolumn wyœwietlacza LCD
 
-// tu ustalamy za pomoc¹ zera lub jedynki czy sterujemy pinem RW
-//	0 - pin RW pod³¹czony na sta³e do GND
-//	1 - pin RW pod³¹czony do mikrokontrolera
-#define USE_RW 0
 
 //----------------------------------------------------------------------------------------
 //
@@ -56,9 +52,6 @@
 // tu definiujemy piny procesora do których pod³¹czamy sygna³y RS,RW, E
 #define LCD_RSPORT B
 #define LCD_RS 0
-
-#define LCD_RWPORT B
-#define LCD_RW 1
 
 #define LCD_EPORT B
 #define LCD_E 1
@@ -92,10 +85,6 @@
 #define USE_LCD_DEFCHAR		0		// wysy³a zdefiniowany znak z pamiêci RAM
 #define USE_LCD_DEFCHAR_P 	0		// wysy³a zdefiniowany znak z pamiêci FLASH
 #define USE_LCD_DEFCHAR_E 	1		// wysy³a zdefiniowany znak z pamiêci EEPROM
-
-#define USE_LCD_CURSOR_ON 		0	// obs³uga w³¹czania/wy³¹czania kursora
-#define USE_LCD_CURSOR_BLINK 	0	// obs³uga w³¹czania/wy³¹czania migania kursora
-#define USE_LCD_CURSOR_HOME 	0	// ustawia kursor na pozycji pocz¹tkowej
 
 //------------------------------------------------  koniec ustawieñ kompilacji ---------------
 
@@ -153,10 +142,6 @@
 #define LCDC_SET_CGRAM				0x40
 #define LCDC_SET_DDRAM				0x80
 
-
-
-
-
 // deklaracje funkcji na potrzeby innych modu³ów
 void lcd_init(void);								// W£¥CZONA na sta³e do kompilacji
 void lcd_cls(void);									// W£¥CZONA na sta³e do kompilacji
@@ -172,11 +157,5 @@ void lcd_hex(int val);								// domyœlnie wy³¹czona z kompilacji w pliku lcd.c
 void lcd_defchar(uint8_t nr, uint8_t *def_znak);	// domyœlnie wy³¹czona z kompilacji w pliku lcd.c
 void lcd_defchar_P(uint8_t nr, uint8_t *def_znak);	// domyœlnie wy³¹czona z kompilacji w pliku lcd.c
 void lcd_defchar_E(uint8_t nr, uint8_t *def_znak);	// domyœlnie wy³¹czona z kompilacji w pliku lcd.c
-
-void lcd_home(void);								// domyœlnie wy³¹czona z kompilacji w pliku lcd.c
-void lcd_cursor_on(void);							// domyœlnie wy³¹czona z kompilacji w pliku lcd.c
-void lcd_cursor_off(void);							// domyœlnie wy³¹czona z kompilacji w pliku lcd.c
-void lcd_blink_on(void);							// domyœlnie wy³¹czona z kompilacji w pliku lcd.c
-void lcd_blink_off(void);							// domyœlnie wy³¹czona z kompilacji w pliku lcd.c
 
 #endif /* LCD_H_ */
