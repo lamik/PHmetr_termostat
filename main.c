@@ -17,6 +17,7 @@
 //#define LED_DDR DDRB
 //
 //#define LED_TOGGLE LED_PORT ^= LED_PIN
+volatile uint8_t Timer1;
 
 void clear()
 {
@@ -40,6 +41,12 @@ int main(void)
 	DS18X20_start_meas(DS18X20_POWER_EXTERN, NULL);
 	_delay_ms(1000);
 
+	/*START TIMER0 for time base*/
+	TCCR0A |= (1<<WGM01); //CTC
+	TCCR0B |= (1<<CS02)|(1<<CS00); //prescaler 1024
+	OCR0A = 155; //for 10ms period
+	TIMSK0 |= (1<<OCIE0A); //Timer0 start
+
 	encoder_init(1);
 	register_sw_callback(clear);
 	int i=0;
@@ -62,5 +69,14 @@ int main(void)
 		}
 }
 
+ISR(TIMER0_COMPA_vect)
+{
+	//przerwanie co 10ms dla podstawy czasu
+	uint16_t n;
+//	Timery do obslugi SCR
+	n = Timer1;		/* 100Hz Timer2 */
+	if (n) Timer1 = --n;
+
+}
 
 
