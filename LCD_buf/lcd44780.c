@@ -438,6 +438,8 @@ void lcd_init(void)
 
 ISR(TIMER1_COMPA_vect)
 {
+//	(*(volatile uint8_t *)((0x05) + 0x20)) ^= (1<<5); //debug LED
+
 	uint8_t i,j,y;
 	char znak;
 //	lcd_write_cmd( LCDC_CLS|LCDC_HOME );
