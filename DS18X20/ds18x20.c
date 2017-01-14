@@ -19,8 +19,6 @@
 #include "ds18x20.h"
 
 
-
-
 uint8_t gSensorIDs[MAXSENSORS][OW_ROMCODE_SIZE];
 uint8_t subzero, cel, cel_fract_bits;	//zmienne temperaturowe
 uint8_t ds18x20_cnt;  //liczba czujnikow
