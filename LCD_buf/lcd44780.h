@@ -83,8 +83,8 @@
 #define USE_LCD_HEX 	0			// wyœwietla liczbê szesnastkow¹ na LCD
 
 #define USE_LCD_DEFCHAR		0		// wysy³a zdefiniowany znak z pamiêci RAM
-#define USE_LCD_DEFCHAR_P 	0		// wysy³a zdefiniowany znak z pamiêci FLASH
-#define USE_LCD_DEFCHAR_E 	1		// wysy³a zdefiniowany znak z pamiêci EEPROM
+#define USE_LCD_DEFCHAR_P 	1		// wysy³a zdefiniowany znak z pamiêci FLASH
+#define USE_LCD_DEFCHAR_E 	0		// wysy³a zdefiniowany znak z pamiêci EEPROM
 
 //------------------------------------------------  koniec ustawieñ kompilacji ---------------
 
@@ -155,7 +155,7 @@ void lcd_str_E(char * str);							// domyœlnie wy³¹czona z kompilacji w pliku lc
 void lcd_int(int val);								// domyœlnie wy³¹czona z kompilacji w pliku lcd.c
 void lcd_hex(int val);								// domyœlnie wy³¹czona z kompilacji w pliku lcd.c
 void lcd_defchar(uint8_t nr, uint8_t *def_znak);	// domyœlnie wy³¹czona z kompilacji w pliku lcd.c
-void lcd_defchar_P(uint8_t nr, uint8_t *def_znak);	// domyœlnie wy³¹czona z kompilacji w pliku lcd.c
+void lcd_defchar_P(uint8_t nr, const uint8_t *def_znak);	// domyœlnie wy³¹czona z kompilacji w pliku lcd.c
 void lcd_defchar_E(uint8_t nr, uint8_t *def_znak);	// domyœlnie wy³¹czona z kompilacji w pliku lcd.c
 
 #endif /* LCD_H_ */

@@ -295,7 +295,7 @@ void lcd_defchar(uint8_t nr, uint8_t *def_znak)
 //		*def_znak:	- wskaŸnik do tablicy 7 bajtów definiuj¹cych znak
 //
 //----------------------------------------------------------------------------------------
-void lcd_defchar_P(uint8_t nr, uint8_t *def_znak)
+void lcd_defchar_P(uint8_t nr, const uint8_t *def_znak)
 {
 	register uint8_t i,c;
 	lcd_write_cmd( 64+((nr&0x07)*8) );

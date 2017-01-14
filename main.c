@@ -27,7 +27,7 @@ int main(void)
 {
 	LED_DDR |= LED_PIN;
 	lcd_init();
-//	lcd_defchar_P(0x80,celsius);
+	lcd_defchar_P(0x80,celsius);
 
 	sei();
 
