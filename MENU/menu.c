@@ -31,9 +31,11 @@ void menu_main()
 	lcd_int(cel_fract_bits);
 	lcd_char(0x00);
 	lcd_str("C    ");
+/*TODO*/
 	lcd_int(7);
 	lcd_char('.');
 	lcd_int(21);
+/******/
 	lcd_str("pH");
 	lcd_locate(1,0);
 	if(termostat_state == IDLE) lcd_str("Bezczynny");
@@ -63,7 +65,6 @@ void menu_main()
 
 void menu_kH()
 {
-
 	cli();
 	lcd_cls();
 	lcd_str("   Warto");
@@ -82,7 +83,7 @@ void menu_kH()
 	}
 	if(enc_right_flag)
 	{
-
+		menu_actual = menu_pH;
 		Timer_menu = menu_time;
 		enc_right_flag =0;
 	}
@@ -97,7 +98,6 @@ void menu_kH()
 
 void menu_setkH()
 {
-
 	if(!Timer_blink_option)
 	{
 		if(blynk==0) blynk = 1;
@@ -118,7 +118,6 @@ void menu_setkH()
 	if(enc_left_flag)
 	{
 		if(kH_val > 0) kH_val--;
-		settings.kH = kH_val;
 		eeprom_update_byte(&settings.kH, kH_val);
 		Timer_menu = menu_time;
 		enc_left_flag = 0;
@@ -144,16 +143,125 @@ void menu_setkH()
 void menu_pH()
 {
 
+	cli();
+	lcd_cls();
+	lcd_str("  Ustalone pH");
+	if(pH_cel>9) lcd_locate(1,5);
+	else lcd_locate(1,6);
+	lcd_int(pH_cel);
+	lcd_char('.');
+	lcd_int(pH_fract);
+	sei();
+
+	if(enc_left_flag)
+	{
+		menu_actual = menu_kH;
+		Timer_menu = menu_time;
+		enc_left_flag = 0;
+	}
+	if(enc_right_flag)
+	{
+
+		Timer_menu = menu_time;
+		enc_right_flag =0;
+	}
+	if(enc_sw_flag)
+	{
+		menu_actual = menu_set_pH_cel;
+		while(!SW_PRESS); //until release button
+		Timer_menu = menu_time;
+		enc_sw_flag = 0;
+	}
 }
 
 void menu_set_pH_cel()
 {
+	if(!Timer_blink_option)
+	{
+		if(blynk==0) blynk = 1;
+		else blynk = 0;
+		Timer_blink_option = BLINKING;
+	}
+	cli();
+	lcd_cls();
+	lcd_str("      Ustalone pH");
+	if(pH_cel>9) lcd_locate(1,5);
+	else lcd_locate(1,6);
+	if(blynk)
+		lcd_int(pH_cel);
+	else
+		{
+			if(pH_cel>9) lcd_str("  ");
+			else lcd_char(' ');
+		}
+	lcd_char('.');
+	lcd_int(pH_fract);
+	sei();
 
+	if(enc_left_flag)
+	{
+		if(pH_cel > 0) pH_cel--;
+		eeprom_update_byte(&settings.pH_cel, pH_cel);
+		Timer_menu = menu_time;
+		enc_left_flag = 0;
+	}
+	if(enc_right_flag)
+	{
+		if(pH_cel < 14) pH_cel++;
+		eeprom_update_byte(&settings.pH_cel, pH_cel);
+		Timer_menu = menu_time;
+		enc_right_flag =0;
+	}
+	if(enc_sw_flag)
+	{
+		menu_actual = menu_set_pH_fract;
+		while(!SW_PRESS); //until release button
+		Timer_menu = menu_time;
+		enc_sw_flag = 0;
+	}
 }
 
 void menu_set_pH_fract()
 {
+	if(!Timer_blink_option)
+	{
+		if(blynk==0) blynk = 1;
+		else blynk = 0;
+		Timer_blink_option = BLINKING;
+	}
+	cli();
+	lcd_cls();
+	lcd_str("   Ustalone pH");
+	if(pH_cel>9) lcd_locate(1,5);
+	else lcd_locate(1,6);
+	lcd_int(pH_cel);
+	lcd_char('.');
+	if(blynk)
+	lcd_int(pH_fract);
+	else lcd_char(' ');
+	sei();
 
+	if(enc_left_flag)
+	{
+		if(pH_fract > 0) pH_fract--;
+		eeprom_update_byte(&settings.pH_fract, pH_fract);
+		Timer_menu = menu_time;
+		enc_left_flag = 0;
+	}
+	if(enc_right_flag)
+	{
+		if(pH_fract < 9) pH_fract++;
+		eeprom_update_byte(&settings.pH_fract, pH_fract);
+		Timer_menu = menu_time;
+		enc_right_flag =0;
+	}
+	if(enc_sw_flag)
+	{
+		menu_actual = menu_pH;
+		while(!SW_PRESS); //until release button
+		Timer_menu = menu_time;
+		enc_sw_flag = 0;
+	}
 }
 
 void menu_temp()

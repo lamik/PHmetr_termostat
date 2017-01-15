@@ -17,6 +17,12 @@ typedef struct Settings{
 	uint8_t termostat_hist_fract;
 	uint8_t termostat_kryt_cel;
 	uint8_t termostat_kryt_fract;
+	uint8_t pH_cel;
+	uint8_t pH_fract;
+	uint8_t pH_hist_cel;
+	uint8_t pH_hist_fract;
+	uint8_t pH_kryt_cel;
+	uint8_t pH_kryt_fract;
 
 }TSettings;
 

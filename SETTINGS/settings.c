@@ -17,6 +17,12 @@ TSettings settings EEMEM = { //user values
 	.termostat_hist_cel = 0,
 	.termostat_hist_fract = 3,
 	.termostat_kryt_cel = 29,
-	.termostat_kryt_fract = 0
+	.termostat_kryt_fract = 0,
+	.pH_cel = 6,
+	.pH_fract = 8,
+	.pH_hist_cel = 0,
+	.pH_hist_fract = 2,
+	.pH_kryt_cel = 6,
+	.pH_kryt_fract = 2,
 };
 

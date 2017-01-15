@@ -9,6 +9,13 @@
 #define PH_CONTROL_PH_CONTROL_H_
 
 uint8_t kH_val;
+uint8_t pH_cel_val;
+uint8_t pH_fracts_val; //actual values
+
+uint8_t pH_cel;
+uint8_t pH_fract; //actual values
+uint8_t pH_hist_cel, pH_hist_fract;
+uint8_t pH_kryt_cel, pH_kryt_fract;
 
 void Ph_controler_init();
 
