@@ -11,7 +11,7 @@
 
 #include "LCD_buf/lcd44780.h"
 #include "ENCODER/encoder.h"
-#include "DS18X20/ds18x20.h"
+#include "Termostat/termostat.h"
 #include "MENU/menu.h"
 
 #define LED_PIN (1<<PB5)
@@ -27,16 +27,16 @@ int main(void)
 {
 	LED_DDR |= LED_PIN;
 	lcd_init();
-	lcd_defchar_P(0x80,celsius);
+	lcd_defchar_P(0,celsius);
+	_delay_ms(100);
+
 
 	sei();
-
 	lcd_str("  pH regulator");
 	lcd_locate(1,0);
 	lcd_str("   Termostat");
 	menu_actual = menu_main;
-	ds18x20_cnt = search_sensors();
-	DS18X20_start_meas(DS18X20_POWER_EXTERN, NULL);
+	Termostat_init();
 	_delay_ms(1000);
 
 	/*START TIMER0 for time base*/
@@ -49,12 +49,8 @@ int main(void)
 
 		while(1)
 		{
-			if(!Timer_1s)
-			{
-			DS18X20_read_meas(gSensorIDs[0],&subzero,&cel,&cel_fract_bits);
-			DS18X20_start_meas(DS18X20_POWER_EXTERN, NULL);
-			Timer_1s = 100;
-			}
+			Termostat_get_temperature();
+			Termostat();
 
 			menu_actual();
 

@@ -10,6 +10,7 @@
 #include "menu.h"
 #include "../LCD_buf/lcd44780.h"
 #include "../ENCODER/encoder.h"
+#include "../Termostat/termostat.h"
 
 extern uint8_t cel, cel_fract_bits;	//zmienne temperaturowe
 
@@ -20,8 +21,16 @@ void menu_main()
 	lcd_int(cel);
 	lcd_char('.');
 	lcd_int(cel_fract_bits);
-	lcd_char(0xDF);
-	lcd_char('C');
+	lcd_char(0x00);
+	lcd_str("C    ");
+	lcd_int(7);
+	lcd_char('.');
+	lcd_int(21);
+	lcd_str("pH");
+	lcd_locate(1,5);
+	if(termostat_state == IDLE) lcd_str("IDLE");
+	if(termostat_state == HEATING) lcd_str("HEATING");
+	if(termostat_state == COOLING) lcd_str("COOLING");
 	sei();
 
 	if(enc_left_flag)
