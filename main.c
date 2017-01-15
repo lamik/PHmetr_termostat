@@ -13,6 +13,7 @@
 #include "ENCODER/encoder.h"
 #include "Termostat/termostat.h"
 #include "MENU/menu.h"
+#include "PH_CONTROL/ph_control.h"
 
 #define LED_PIN (1<<PB5)
 #define LED_PORT PORTB
@@ -25,6 +26,7 @@ const uint8_t celsius[] PROGMEM = {7,5,7,32,32,32,32,32};
 const uint8_t l_pol[] PROGMEM = {12,4,6,4,12,4,14,32};
 const uint8_t s_pol[] PROGMEM = {2,4,14,16,14,1,30,32};
 const uint8_t c_pol[] PROGMEM = {2,4,14,16,16,17,14,32};
+const uint8_t o_pol[] PROGMEM = {2,4,14,17,17,17,14,32};
 
 int main(void)
 {
@@ -34,6 +36,7 @@ int main(void)
 	lcd_defchar_P(1,l_pol);
 	lcd_defchar_P(2,s_pol);
 	lcd_defchar_P(3,c_pol);
+	lcd_defchar_P(4,o_pol);
 	_delay_ms(100);
 
 
@@ -73,7 +76,8 @@ ISR(TIMER0_COMPA_vect)
 	if (n) Timer_1s = --n;
 	n = Timer_menu;
 	if (n) Timer_menu = --n;
-
+	n = Timer_blink_option;
+	if (n) Timer_blink_option = --n;
 }
 
 
