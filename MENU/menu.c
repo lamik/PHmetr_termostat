@@ -142,7 +142,6 @@ void menu_setkH()
 
 void menu_pH()
 {
-
 	cli();
 	lcd_cls();
 	lcd_str("  Ustalone pH");
@@ -161,7 +160,7 @@ void menu_pH()
 	}
 	if(enc_right_flag)
 	{
-
+		menu_actual = menu_set_pH_hist;
 		Timer_menu = menu_time;
 		enc_right_flag =0;
 	}
@@ -184,7 +183,7 @@ void menu_set_pH_cel()
 	}
 	cli();
 	lcd_cls();
-	lcd_str("      Ustalone pH");
+	lcd_str("  Ustalone pH");
 	if(pH_cel>9) lcd_locate(1,5);
 	else lcd_locate(1,6);
 	if(blynk)
@@ -231,7 +230,7 @@ void menu_set_pH_fract()
 	}
 	cli();
 	lcd_cls();
-	lcd_str("   Ustalone pH");
+	lcd_str("  Ustalone pH");
 	if(pH_cel>9) lcd_locate(1,5);
 	else lcd_locate(1,6);
 	lcd_int(pH_cel);
@@ -266,17 +265,125 @@ void menu_set_pH_fract()
 
 void menu_set_pH_hist()
 {
+	cli();
+	lcd_cls();
+	lcd_str("  Histereza pH");
+	if(pH_hist_cel>9) lcd_locate(1,5);
+	else lcd_locate(1,6);
+	lcd_int(pH_hist_cel);
+	lcd_char('.');
+	lcd_int(pH_hist_fract);
+	sei();
 
+	if(enc_left_flag)
+	{
+		menu_actual = menu_pH;
+		Timer_menu = menu_time;
+		enc_left_flag = 0;
+	}
+	if(enc_right_flag)
+	{
+
+		Timer_menu = menu_time;
+		enc_right_flag =0;
+	}
+	if(enc_sw_flag)
+	{
+		menu_actual = menu_set_pH_hist_cel;
+		while(!SW_PRESS); //until release button
+		Timer_menu = menu_time;
+		enc_sw_flag = 0;
+	}
 }
 
 void menu_set_pH_hist_cel()
 {
+	if(!Timer_blink_option)
+	{
+		if(blynk==0) blynk = 1;
+		else blynk = 0;
+		Timer_blink_option = BLINKING;
+	}
+	cli();
+	lcd_cls();
+	lcd_str("  Histereza pH");
+	if(pH_hist_cel>9) lcd_locate(1,5);
+	else lcd_locate(1,6);
+	if(blynk)
+		lcd_int(pH_hist_cel);
+	else
+		{
+			if(pH_hist_cel>9) lcd_str("  ");
+			else lcd_char(' ');
+		}
+	lcd_char('.');
+	lcd_int(pH_hist_fract);
+	sei();
 
+	if(enc_left_flag)
+	{
+		if(pH_hist_cel > 0) pH_hist_cel--;
+		eeprom_update_byte(&settings.pH_hist_cel, pH_hist_cel);
+		Timer_menu = menu_time;
+		enc_left_flag = 0;
+	}
+	if(enc_right_flag)
+	{
+		if(pH_hist_cel < 14) pH_hist_cel++;
+		eeprom_update_byte(&settings.pH_hist_cel, pH_hist_cel);
+		Timer_menu = menu_time;
+		enc_right_flag =0;
+	}
+	if(enc_sw_flag)
+	{
+		menu_actual = menu_set_pH_hist_fract;
+		while(!SW_PRESS); //until release button
+		Timer_menu = menu_time;
+		enc_sw_flag = 0;
+	}
 }
 
 void menu_set_pH_hist_fract()
 {
+	if(!Timer_blink_option)
+	{
+		if(blynk==0) blynk = 1;
+		else blynk = 0;
+		Timer_blink_option = BLINKING;
+	}
+	cli();
+	lcd_cls();
+	lcd_str("  Histereza pH");
+	if(pH_hist_cel>9) lcd_locate(1,5);
+	else lcd_locate(1,6);
+	lcd_int(pH_hist_cel);
+	lcd_char('.');
+	if(blynk)
+	lcd_int(pH_hist_fract);
+	else lcd_char(' ');
+	sei();
 
+	if(enc_left_flag)
+	{
+		if(pH_hist_fract > 0) pH_hist_fract--;
+		eeprom_update_byte(&settings.pH_hist_fract, pH_hist_fract);
+		Timer_menu = menu_time;
+		enc_left_flag = 0;
+	}
+	if(enc_right_flag)
+	{
+		if(pH_hist_fract < 9) pH_hist_fract++;
+		eeprom_update_byte(&settings.pH_hist_fract, pH_hist_fract);
+		Timer_menu = menu_time;
+		enc_right_flag =0;
+	}
+	if(enc_sw_flag)
+	{
+		menu_actual = menu_set_pH_hist;
+		while(!SW_PRESS); //until release button
+		Timer_menu = menu_time;
+		enc_sw_flag = 0;
+	}
 }
 
 void menu_set_pH_kryt()
