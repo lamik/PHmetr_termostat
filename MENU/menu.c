@@ -1169,7 +1169,9 @@ void menu_showing_time()
 {
 	cli();
 	lcd_cls();
-	lcd_str("   Czas menu");
+	lcd_str(" Menu i pod");
+	lcd_char(0x02);
+	lcd_str("w.");
 	if(menu_time>900) lcd_locate(1,5);
 	else lcd_locate(1,6);
 	lcd_int(menu_time/100);

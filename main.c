@@ -22,6 +22,9 @@
 #define LED_DDR DDRB
 //
 #define LED_TOGGLE LED_PORT ^= LED_PIN
+#define LED_ON	LED_PORT &= ~LED_PIN
+#define LED_OFF LED_PORT |= LED_PIN
+
 volatile uint8_t Timer_1s;
 extern TSettings settings;
 extern uint16_t menu_time;
@@ -35,6 +38,7 @@ const uint8_t o_pol[] PROGMEM = {2,4,14,17,17,17,14,32};
 int main(void)
 {
 	LED_DDR |= LED_PIN;
+	LED_OFF;
 	lcd_init();
 	lcd_defchar_P(0,celsius);
 	lcd_defchar_P(1,l_pol);
@@ -68,7 +72,16 @@ int main(void)
 
 			menu_actual();
 
-			if((!Timer_menu) && (menu_actual != menu_main)) menu_actual = menu_main;
+			if((!Timer_menu) && (menu_actual != menu_main))
+			{
+				menu_actual = menu_main;
+				Timer_menu = menu_time;
+			}
+			if(Timer_menu)
+			{
+				LED_ON; //LCD backlight on.
+			}
+			else LED_OFF;
 		}
 }
 
