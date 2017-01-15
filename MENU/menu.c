@@ -146,8 +146,6 @@ void menu_setkH()
 	}
 }
 
-
-
 void menu_pH()
 {
 	cli();
@@ -438,7 +436,7 @@ void menu_set_pH_kryt()
 	}
 	if(enc_right_flag)
 	{
-
+		menu_actual = menu_temp;
 		Timer_menu = menu_time;
 		enc_right_flag =0;
 	}
@@ -566,47 +564,435 @@ void menu_set_pH_kryt_fract()
 
 void menu_temp()
 {
+	cli();
+	lcd_cls();
+	lcd_str("Ust. temperatura");
+	if(termostat_cel>9) lcd_locate(1,5);
+	else lcd_locate(1,6);
+	lcd_int(termostat_cel);
+	lcd_char('.');
+	lcd_int(termostat_fract);
+	lcd_char(0x00);
+	lcd_char('C');
+	sei();
 
+	if(enc_left_flag)
+	{
+		menu_actual = menu_set_pH_kryt;
+		Timer_menu = menu_time;
+		enc_left_flag = 0;
+	}
+	if(enc_right_flag)
+	{
+		menu_actual = menu_temp_hist;
+		Timer_menu = menu_time;
+		enc_right_flag =0;
+	}
+	if(enc_sw_flag)
+	{
+		menu_actual = menu_set_temp_cel;
+		while(!SW_PRESS); //until release button
+		Timer_menu = menu_time;
+		enc_sw_flag = 0;
+	}
 }
 
 void menu_set_temp_cel()
 {
+	if(!Timer_blink_option)
+	{
+		if(blynk==0) blynk = 1;
+		else blynk = 0;
+		Timer_blink_option = BLINKING;
+	}
+	cli();
+	lcd_cls();
+	lcd_str("Ust. temperatura");
+	if(termostat_cel>9) lcd_locate(1,5);
+	else lcd_locate(1,6);
+	if(blynk)
+		lcd_int(termostat_cel);
+	else
+		{
+			if(termostat_cel>9) lcd_str("  ");
+			else lcd_char(' ');
+		}
+	lcd_char('.');
+	lcd_int(termostat_fract);
+	lcd_char(0x00);
+	lcd_char('C');
+	sei();
 
+	if(enc_left_flag)
+	{
+		if(termostat_cel > 0)
+			{
+			termostat_cel--;
+			eeprom_update_byte(&settings.termostat_cel, termostat_cel);
+			}
+		Timer_menu = menu_time;
+		enc_left_flag = 0;
+	}
+	if(enc_right_flag)
+	{
+		if((termostat_cel < 50))
+			{
+			termostat_cel++;
+			eeprom_update_byte(&settings.termostat_cel, termostat_cel);
+			}
+		Timer_menu = menu_time;
+		enc_right_flag =0;
+	}
+	if(enc_sw_flag)
+	{
+		menu_actual = menu_set_temp_fract;
+		while(!SW_PRESS); //until release button
+		Timer_menu = menu_time;
+		enc_sw_flag = 0;
+	}
 }
 
 void menu_set_temp_fract()
 {
+	if(!Timer_blink_option)
+	{
+		if(blynk==0) blynk = 1;
+		else blynk = 0;
+		Timer_blink_option = BLINKING;
+	}
+	cli();
+	lcd_cls();
+	lcd_str("Ust. temperatura");
+	if(termostat_cel>9) lcd_locate(1,5);
+	else lcd_locate(1,6);
+	lcd_int(termostat_cel);
+	lcd_char('.');
+	if(blynk)
+	lcd_int(termostat_fract);
+	else lcd_char(' ');
+	lcd_char(0x00);
+	lcd_char('C');
+	sei();
 
+	if(enc_left_flag)
+	{
+		if(termostat_fract > 1)
+			{
+			termostat_fract--;
+			eeprom_update_byte(&settings.termostat_fract, termostat_fract);
+			}
+		Timer_menu = menu_time;
+		enc_left_flag = 0;
+	}
+	if(enc_right_flag)
+	{
+		if(termostat_fract < 9)
+			{
+			termostat_fract++;
+			eeprom_update_byte(&settings.termostat_fract, termostat_fract);
+			}
+		Timer_menu = menu_time;
+		enc_right_flag =0;
+	}
+	if(enc_sw_flag)
+	{
+		menu_actual = menu_temp;
+		while(!SW_PRESS); //until release button
+		Timer_menu = menu_time;
+		enc_sw_flag = 0;
+	}
 }
 
 void menu_temp_hist()
 {
+	cli();
+	lcd_cls();
+	lcd_str("Histereza temp.");
+	if(termostat_hist_cel>9) lcd_locate(1,5);
+	else lcd_locate(1,6);
+	lcd_int(termostat_hist_cel);
+	lcd_char('.');
+	lcd_int(termostat_hist_fract);
+	lcd_char(0x00);
+	lcd_char('C');
+	sei();
 
+	if(enc_left_flag)
+	{
+		menu_actual = menu_temp;
+		Timer_menu = menu_time;
+		enc_left_flag = 0;
+	}
+	if(enc_right_flag)
+	{
+		menu_actual = menu_temp_kryt;
+		Timer_menu = menu_time;
+		enc_right_flag =0;
+	}
+	if(enc_sw_flag)
+	{
+		menu_actual = menu_set_temp_hist_cel;
+		while(!SW_PRESS); //until release button
+		Timer_menu = menu_time;
+		enc_sw_flag = 0;
+	}
 }
 
 void menu_set_temp_hist_cel()
 {
+	if(!Timer_blink_option)
+	{
+		if(blynk==0) blynk = 1;
+		else blynk = 0;
+		Timer_blink_option = BLINKING;
+	}
+	cli();
+	lcd_cls();
+	lcd_str("Histereza temp.");
+	if(termostat_hist_cel>9) lcd_locate(1,5);
+	else lcd_locate(1,6);
+	if(blynk)
+		lcd_int(termostat_hist_cel);
+	else
+		{
+			if(termostat_hist_cel>9) lcd_str("  ");
+			else lcd_char(' ');
+		}
+	lcd_char('.');
+	lcd_int(termostat_hist_fract);
+	lcd_char(0x00);
+	lcd_char('C');
+	sei();
 
+	if(enc_left_flag)
+	{
+		if(termostat_hist_cel > 0)
+			{
+			termostat_hist_cel--;
+			eeprom_update_byte(&settings.termostat_hist_cel, termostat_hist_cel);
+			}
+		Timer_menu = menu_time;
+		enc_left_flag = 0;
+	}
+	if(enc_right_flag)
+	{
+		if((termostat_hist_cel < 50))
+			{
+			termostat_hist_cel++;
+			eeprom_update_byte(&settings.termostat_hist_cel, termostat_hist_cel);
+			}
+		Timer_menu = menu_time;
+		enc_right_flag =0;
+	}
+	if(enc_sw_flag)
+	{
+		menu_actual = menu_set_temp_hist_fract;
+		while(!SW_PRESS); //until release button
+		Timer_menu = menu_time;
+		enc_sw_flag = 0;
+	}
 }
 
 void menu_set_temp_hist_fract()
 {
+	if(!Timer_blink_option)
+	{
+		if(blynk==0) blynk = 1;
+		else blynk = 0;
+		Timer_blink_option = BLINKING;
+	}
+	cli();
+	lcd_cls();
+	lcd_str("Histereza temp.");
+	if(termostat_hist_cel>9) lcd_locate(1,5);
+	else lcd_locate(1,6);
+	lcd_int(termostat_hist_cel);
+	lcd_char('.');
+	if(blynk)
+	lcd_int(termostat_hist_fract);
+	else lcd_char(' ');
+	lcd_char(0x00);
+	lcd_char('C');
+	sei();
 
+	if(enc_left_flag)
+	{
+		if(termostat_hist_fract > 1)
+			{
+			termostat_hist_fract--;
+			eeprom_update_byte(&settings.termostat_hist_fract, termostat_hist_fract);
+			}
+		Timer_menu = menu_time;
+		enc_left_flag = 0;
+	}
+	if(enc_right_flag)
+	{
+		if(termostat_hist_fract < 9)
+			{
+			termostat_hist_fract++;
+			eeprom_update_byte(&settings.termostat_hist_fract, termostat_hist_fract);
+			}
+		Timer_menu = menu_time;
+		enc_right_flag =0;
+	}
+	if(enc_sw_flag)
+	{
+		menu_actual = menu_temp_hist;
+		while(!SW_PRESS); //until release button
+		Timer_menu = menu_time;
+		enc_sw_flag = 0;
+	}
 }
 
 void menu_temp_kryt()
 {
+	cli();
+	lcd_cls();
+	lcd_str("  Kryt. temp.");
+	if(termostat_kryt_cel>9) lcd_locate(1,5);
+	else lcd_locate(1,6);
+	lcd_int(termostat_kryt_cel);
+	lcd_char('.');
+	lcd_int(termostat_kryt_fract);
+	lcd_char(0x00);
+	lcd_char('C');
+	sei();
 
+	if(enc_left_flag)
+	{
+		menu_actual = menu_temp_hist;
+		Timer_menu = menu_time;
+		enc_left_flag = 0;
+	}
+	if(enc_right_flag)
+	{
+
+		Timer_menu = menu_time;
+		enc_right_flag =0;
+	}
+	if(enc_sw_flag)
+	{
+		menu_actual = menu_set_temp_kryt_cel;
+		while(!SW_PRESS); //until release button
+		Timer_menu = menu_time;
+		enc_sw_flag = 0;
+	}
 }
 
 void menu_set_temp_kryt_cel()
 {
+	if(!Timer_blink_option)
+	{
+		if(blynk==0) blynk = 1;
+		else blynk = 0;
+		Timer_blink_option = BLINKING;
+	}
+	cli();
+	lcd_cls();
+	lcd_str("  Kryt. temp.");
+	if(termostat_kryt_cel>9) lcd_locate(1,5);
+	else lcd_locate(1,6);
+	if(blynk)
+		lcd_int(termostat_kryt_cel);
+	else
+		{
+			if(termostat_kryt_cel>9) lcd_str("  ");
+			else lcd_char(' ');
+		}
+	lcd_char('.');
+	lcd_int(termostat_kryt_fract);
+	lcd_char(0x00);
+	lcd_char('C');
+	sei();
 
+	if(enc_left_flag)
+	{
+		if(termostat_kryt_cel > 0)
+			{
+			termostat_kryt_cel--;
+			if((termostat_kryt_cel*10 + termostat_kryt_fract) < (termostat_cel*10 + termostat_fract))
+			{
+				termostat_kryt_cel =  termostat_cel;
+				termostat_kryt_fract = termostat_fract;
+			}
+			eeprom_update_byte(&settings.termostat_kryt_cel, termostat_kryt_cel);
+			}
+		Timer_menu = menu_time;
+		enc_left_flag = 0;
+	}
+	if(enc_right_flag)
+	{
+		if((termostat_kryt_cel < 50))
+			{
+			termostat_kryt_cel++;
+			eeprom_update_byte(&settings.termostat_kryt_cel, termostat_kryt_cel);
+			}
+		Timer_menu = menu_time;
+		enc_right_flag =0;
+	}
+	if(enc_sw_flag)
+	{
+		menu_actual = menu_set_temp_kryt_fract;
+		while(!SW_PRESS); //until release button
+		Timer_menu = menu_time;
+		enc_sw_flag = 0;
+	}
 }
 
 void menu_set_temp_kryt_fract()
 {
+	if(!Timer_blink_option)
+	{
+		if(blynk==0) blynk = 1;
+		else blynk = 0;
+		Timer_blink_option = BLINKING;
+	}
+	cli();
+	lcd_cls();
+	lcd_str("  Kryt. temp.");
+	if(termostat_kryt_cel>9) lcd_locate(1,5);
+	else lcd_locate(1,6);
+	lcd_int(termostat_kryt_cel);
+	lcd_char('.');
+	if(blynk)
+	lcd_int(termostat_kryt_fract);
+	else lcd_char(' ');
+	lcd_char(0x00);
+	lcd_char('C');
+	sei();
 
+	if(enc_left_flag)
+	{
+		if(termostat_kryt_fract > 0)
+			{
+			termostat_kryt_fract--;
+			if((termostat_kryt_cel*10 + termostat_kryt_fract) < (termostat_cel*10 + pH_fract))
+			{
+				termostat_kryt_cel =  termostat_cel;
+				termostat_kryt_fract = termostat_fract;
+			}
+				eeprom_update_byte(&settings.termostat_kryt_fract, termostat_kryt_fract);
+			}
+		Timer_menu = menu_time;
+		enc_left_flag = 0;
+	}
+	if(enc_right_flag)
+	{
+		if(termostat_kryt_fract < 9)
+			{
+				termostat_kryt_fract++;
+				eeprom_update_byte(&settings.termostat_kryt_fract, termostat_kryt_fract);
+			}
+		Timer_menu = menu_time;
+		enc_right_flag =0;
+	}
+	if(enc_sw_flag)
+	{
+		menu_actual = menu_temp_kryt;
+		while(!SW_PRESS); //until release button
+		Timer_menu = menu_time;
+		enc_sw_flag = 0;
+	}
 }
 
 void menu_calibrate_probe()
