@@ -264,6 +264,36 @@ void menu_set_pH_fract()
 	}
 }
 
+void menu_set_pH_hist()
+{
+
+}
+
+void menu_set_pH_hist_cel()
+{
+
+}
+
+void menu_set_pH_hist_fract()
+{
+
+}
+
+void menu_set_pH_kryt()
+{
+
+}
+
+void menu_set_pH_kryt_cel()
+{
+
+}
+
+void menu_set_pH_kryt_fract()
+{
+
+}
+
 void menu_temp()
 {
 
@@ -275,6 +305,36 @@ void menu_set_temp_cel()
 }
 
 void menu_set_temp_fract()
+{
+
+}
+
+void menu_temp_hist()
+{
+
+}
+
+void menu_set_temp_hist_cel()
+{
+
+}
+
+void menu_set_temp_hist_fract()
+{
+
+}
+
+void menu_temp_kryt()
+{
+
+}
+
+void menu_set_temp_kryt_cel()
+{
+
+}
+
+void menu_set_temp_kryt_fract()
 {
 
 }
@@ -293,6 +353,17 @@ void menu_calibrate_probe_up()
 {
 
 }
+
+void menu_showing_time()
+{
+
+}
+
+void menu_set_showing_time()
+{
+
+}
+
 
 void menu_back_to_main()
 {
