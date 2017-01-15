@@ -4,11 +4,15 @@
  *  Created on: 15 sty 2017
  *      Author: Mateusz Salamon
  */
+#include <avr/io.h>
+#include <avr/eeprom.h>
+
 #include "termostat.h"
+#include "../SETTINGS/settings.h"
 
 extern volatile uint8_t Timer_1s;
 extern uint8_t subzero, cel, cel_fract_bits;	//zmienne temperaturowe
-
+extern TSettings settings;
 
 
 void Termostat_init()
@@ -23,12 +27,13 @@ void Termostat_init()
 	ds18x20_cnt = search_sensors();
 	DS18X20_start_meas(DS18X20_POWER_EXTERN, NULL);
 
-	termostat_cel = 26;
-	termostat_fract = 0;
-	termostat_hist_cel = 1;
-	termostat_hist_fract = 0;
-	termostat_kryt_cel = 28;
-	termostat_kryt_fract = 0;
+
+	termostat_cel = eeprom_read_byte(&settings.termostat_cel);
+	termostat_fract = eeprom_read_byte(&settings.termostat_fract);
+	termostat_hist_cel = eeprom_read_byte(&settings.termostat_hist_cel);
+	termostat_hist_fract = eeprom_read_byte(&settings.termostat_hist_fract);
+	termostat_kryt_cel = eeprom_read_byte(&settings.termostat_kryt_cel);
+	termostat_kryt_fract = eeprom_read_byte(&settings.termostat_kryt_fract);
 
 }
 

@@ -6,18 +6,21 @@
  */
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <avr/eeprom.h>
 
 #include "menu.h"
 #include "../LCD_buf/lcd44780.h"
 #include "../ENCODER/encoder.h"
 #include "../Termostat/termostat.h"
 #include "../PH_CONTROL/ph_control.h"
+#include "../SETTINGS/settings.h"
 
 #define BLINKING 20;
 
 extern uint8_t cel, cel_fract_bits;	//zmienne temperaturowe
 uint16_t menu_time = 500;
 uint8_t blynk;
+extern TSettings settings;
 
 void menu_main()
 {
@@ -115,12 +118,15 @@ void menu_setkH()
 	if(enc_left_flag)
 	{
 		if(kH_val > 0) kH_val--;
+		settings.kH = kH_val;
+		eeprom_update_byte(&settings.kH, kH_val);
 		Timer_menu = menu_time;
 		enc_left_flag = 0;
 	}
 	if(enc_right_flag)
 	{
 		if(kH_val < 50) kH_val++;
+		eeprom_update_byte(&settings.kH, kH_val);
 		Timer_menu = menu_time;
 		enc_right_flag =0;
 	}

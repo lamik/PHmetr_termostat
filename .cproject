@@ -114,7 +114,14 @@
 		<project id="PHmetr_termostat.de.innot.avreclipse.project.winavr.elf_2.1.0.803765487" name="AVR Cross Target Application" projectType="de.innot.avreclipse.project.winavr.elf_2.1.0"/>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
-	<storageModule moduleId="refreshScope"/>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Debug">
+			<resource resourceType="PROJECT" workspacePath="/PHmetr_termostat"/>
+		</configuration>
+		<configuration configurationName="Release">
+			<resource resourceType="PROJECT" workspacePath="/PHmetr_termostat"/>
+		</configuration>
+	</storageModule>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		<scannerConfigBuildInfo instanceId="de.innot.avreclipse.configuration.app.release.301797952;de.innot.avreclipse.configuration.app.release.301797952.;de.innot.avreclipse.tool.compiler.winavr.app.release.1334587127;de.innot.avreclipse.compiler.winavr.input.1783061513">

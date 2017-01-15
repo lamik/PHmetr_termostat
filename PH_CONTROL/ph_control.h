@@ -10,4 +10,6 @@
 
 uint8_t kH_val;
 
+void Ph_controler_init();
+
 #endif /* PH_CONTROL_PH_CONTROL_H_ */

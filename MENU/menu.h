@@ -13,14 +13,6 @@ volatile uint16_t Timer_menu;
 volatile uint8_t Timer_blink_option;
 
 
-//typedef const struct MenuElement
-//{
-//	void (*function)(void);
-//	void (*fun_left)(void);
-//	void (*fun_right)(void);
-//	void (*fun_enter)(void);
-//}Tmenu_element;
-
 void menu_main();			//0
 void menu_kH();				//1
 void menu_setkH();			//2

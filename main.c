@@ -8,12 +8,14 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 #include <avr/pgmspace.h>
+#include <avr/eeprom.h>
 
 #include "LCD_buf/lcd44780.h"
 #include "ENCODER/encoder.h"
 #include "Termostat/termostat.h"
 #include "MENU/menu.h"
 #include "PH_CONTROL/ph_control.h"
+#include "SETTINGS/settings.h"
 
 #define LED_PIN (1<<PB5)
 #define LED_PORT PORTB
@@ -21,6 +23,8 @@
 //
 #define LED_TOGGLE LED_PORT ^= LED_PIN
 volatile uint8_t Timer_1s;
+extern TSettings settings;
+extern uint16_t menu_time;
 
 const uint8_t celsius[] PROGMEM = {7,5,7,32,32,32,32,32};
 const uint8_t l_pol[] PROGMEM = {12,4,6,4,12,4,14,32};
@@ -37,8 +41,8 @@ int main(void)
 	lcd_defchar_P(2,s_pol);
 	lcd_defchar_P(3,c_pol);
 	lcd_defchar_P(4,o_pol);
-	_delay_ms(100);
 
+	menu_time = eeprom_read_word(&settings.menu_time);
 
 	sei();
 	lcd_str("  Kontroler pH");
@@ -46,6 +50,7 @@ int main(void)
 	lcd_str("   Termostat");
 	menu_actual = menu_main;
 	Termostat_init();
+	Ph_controler_init();
 	_delay_ms(1000);
 
 	/*START TIMER0 for time base*/
