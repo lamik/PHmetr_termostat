@@ -866,7 +866,7 @@ void menu_temp_kryt()
 	}
 	if(enc_right_flag)
 	{
-
+		menu_actual = menu_calibrate_probe;
 		Timer_menu = menu_time;
 		enc_right_flag =0;
 	}
@@ -997,7 +997,32 @@ void menu_set_temp_kryt_fract()
 
 void menu_calibrate_probe()
 {
+	cli();
+	lcd_cls();
+	lcd_str(" ==Kalibracja==");
+	lcd_locate(1,0);
+	lcd_str(" ===sondy pH===");
+	sei();
 
+	if(enc_left_flag)
+	{
+		menu_actual = menu_temp_kryt;
+		Timer_menu = menu_time;
+		enc_left_flag = 0;
+	}
+	if(enc_right_flag)
+	{
+		menu_actual = menu_showing_time;
+		Timer_menu = menu_time;
+		enc_right_flag =0;
+	}
+	if(enc_sw_flag)
+	{
+
+		while(!SW_PRESS); //until release button
+		Timer_menu = menu_time;
+		enc_sw_flag = 0;
+	}
 }
 
 void menu_calibrate_probe_down()
@@ -1023,7 +1048,7 @@ void menu_showing_time()
 
 	if(enc_left_flag)
 	{
-
+		menu_actual = menu_calibrate_probe;
 		Timer_menu = menu_time;
 		enc_left_flag = 0;
 	}
