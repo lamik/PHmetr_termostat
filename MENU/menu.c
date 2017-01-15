@@ -13,6 +13,7 @@
 #include "../Termostat/termostat.h"
 
 extern uint8_t cel, cel_fract_bits;	//zmienne temperaturowe
+uint16_t menu_time = 300;
 
 void menu_main()
 {
@@ -35,17 +36,19 @@ void menu_main()
 
 	if(enc_left_flag)
 	{
-
+		Timer_menu = menu_time;
 		enc_left_flag = 0;
 	}
 	if(enc_right_flag)
 	{
-
+		Timer_menu = menu_time;
 		enc_right_flag =0;
 	}
 	if(enc_sw_flag)
 	{
-
+		menu_actual = menu_kH;
+		while(!SW_PRESS); //until release button
+		Timer_menu = menu_time;
 		enc_sw_flag = 0;
 	}
 
@@ -54,6 +57,34 @@ void menu_main()
 void menu_kH()
 {
 
+	cli();
+	lcd_cls();
+	lcd_str("   Warto");
+	lcd_char(0x02);
+	lcd_char(0x03);
+	lcd_str(" KH");
+	sei();
+
+	if(enc_left_flag)
+	{
+
+		Timer_menu = menu_time;
+		enc_left_flag = 0;
+	}
+	if(enc_right_flag)
+	{
+
+		Timer_menu = menu_time;
+		enc_right_flag =0;
+	}
+	if(enc_sw_flag)
+	{
+		menu_actual = menu_main;
+
+		while(!SW_PRESS); //until release button
+		Timer_menu = menu_time;
+		enc_sw_flag = 0;
+	}
 }
 
 void menu_setkH()

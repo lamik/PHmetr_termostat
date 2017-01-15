@@ -9,6 +9,8 @@
 #define MENU_MENU_H_
 
 void(*menu_actual)(void);
+volatile uint16_t Timer_menu;
+
 
 //typedef const struct MenuElement
 //{
@@ -31,5 +33,7 @@ void menu_calibrate_probe();//9
 void menu_calibrate_probe_down();//10
 void menu_calibrate_probe_up();//11
 void menu_back_to_main();	//12
+void menu_showing_time();	//13
+void menu_set_showing_time();	//14
 
 #endif /* MENU_MENU_H_ */
