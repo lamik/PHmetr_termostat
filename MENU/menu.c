@@ -1012,12 +1012,86 @@ void menu_calibrate_probe_up()
 
 void menu_showing_time()
 {
+	cli();
+	lcd_cls();
+	lcd_str("   Czas menu");
+	if(menu_time>900) lcd_locate(1,5);
+	else lcd_locate(1,6);
+	lcd_int(menu_time/100);
+	lcd_str(" sec");
+	sei();
 
+	if(enc_left_flag)
+	{
+
+		Timer_menu = menu_time;
+		enc_left_flag = 0;
+	}
+	if(enc_right_flag)
+	{
+		menu_actual = menu_back_to_main;
+		Timer_menu = menu_time;
+		enc_right_flag =0;
+	}
+	if(enc_sw_flag)
+	{
+		menu_actual = menu_set_showing_time;
+		while(!SW_PRESS); //until release button
+		Timer_menu = menu_time;
+		enc_sw_flag = 0;
+	}
 }
 
 void menu_set_showing_time()
 {
+	if(!Timer_blink_option)
+	{
+		if(blynk==0) blynk = 1;
+		else blynk = 0;
+		Timer_blink_option = BLINKING;
+	}
+	cli();
+	lcd_cls();
+	lcd_str("   Czas menu");
+	if(menu_time>900) lcd_locate(1,5);
+	else lcd_locate(1,6);
+	if(blynk)
+		lcd_int(menu_time/100);
+	else
+	{
+		if(menu_time>900) lcd_str("  ");
+		else lcd_char(' ');
+	}
+	lcd_str(" sec");
+	sei();
 
+	if(enc_left_flag)
+	{
+		if(menu_time > 400)
+		{
+			menu_time -= 100;
+			eeprom_update_word(&settings.menu_time, menu_time);
+		}
+		Timer_menu = menu_time;
+		enc_left_flag = 0;
+	}
+	if(enc_right_flag)
+	{
+		if(menu_time < 5000)
+		{
+			menu_time += 100;
+			eeprom_update_word(&settings.menu_time, menu_time);
+		}
+		Timer_menu = menu_time;
+		enc_right_flag =0;
+	}
+	if(enc_sw_flag)
+	{
+		menu_actual = menu_showing_time;
+		while(!SW_PRESS); //until release button
+		Timer_menu = menu_time;
+		enc_sw_flag = 0;
+	}
 }
 
 
@@ -1037,7 +1111,7 @@ void menu_back_to_main()
 
 	if(enc_left_flag)
 	{
-
+		menu_actual = menu_showing_time;
 		Timer_menu = menu_time;
 		enc_left_flag = 0;
 	}
