@@ -1018,7 +1018,85 @@ void menu_calibrate_probe()
 	}
 	if(enc_sw_flag)
 	{
+		menu_actual = menu_calibrate_probe_sure_no;
+		while(!SW_PRESS); //until release button
+		Timer_menu = menu_time;
+		enc_sw_flag = 0;
+	}
+}
 
+void menu_calibrate_probe_sure_no()
+{
+	if(!Timer_blink_option)
+	{
+		if(blynk==0) blynk = 1;
+		else blynk = 0;
+		Timer_blink_option = BLINKING;
+	}
+	cli();
+	lcd_cls();
+	lcd_str(" Jeste");
+	lcd_char(0x02);
+	lcd_str(" pewien?");
+	lcd_locate(1,6);
+	if(blynk)
+		lcd_str("Nie");
+	sei();
+
+	if(enc_left_flag)
+	{
+		menu_actual = menu_calibrate_probe_sure_yes;
+		Timer_menu = menu_time;
+		enc_left_flag = 0;
+	}
+	if(enc_right_flag)
+	{
+		menu_actual = menu_calibrate_probe_sure_yes;
+		Timer_menu = menu_time;
+		enc_right_flag =0;
+	}
+	if(enc_sw_flag)
+	{
+		menu_actual = menu_calibrate_probe;
+		while(!SW_PRESS); //until release button
+		Timer_menu = menu_time;
+		enc_sw_flag = 0;
+	}
+}
+
+void menu_calibrate_probe_sure_yes()
+{
+	if(!Timer_blink_option)
+	{
+		if(blynk==0) blynk = 1;
+		else blynk = 0;
+		Timer_blink_option = BLINKING;
+	}
+	cli();
+	lcd_cls();
+	lcd_str(" Jeste");
+	lcd_char(0x02);
+	lcd_str(" pewien?");
+	lcd_locate(1,3);
+	if(blynk)
+		lcd_str("!!!TAK!!!");
+	sei();
+
+	if(enc_left_flag)
+	{
+		menu_actual = menu_calibrate_probe_sure_no;
+		Timer_menu = menu_time;
+		enc_left_flag = 0;
+	}
+	if(enc_right_flag)
+	{
+		menu_actual = menu_calibrate_probe_sure_no;
+		Timer_menu = menu_time;
+		enc_right_flag =0;
+	}
+	if(enc_sw_flag)
+	{
+		menu_actual = menu_calibrate_probe_down;
 		while(!SW_PRESS); //until release button
 		Timer_menu = menu_time;
 		enc_sw_flag = 0;
@@ -1027,12 +1105,64 @@ void menu_calibrate_probe()
 
 void menu_calibrate_probe_down()
 {
+	cli();
+	lcd_cls();
+	lcd_str("  Odczyn 4 pH");
+	lcd_locate(1,6);
+	lcd_str("XXX");
+	sei();
 
+	Timer_menu = menu_time;
+
+	if(enc_left_flag)
+	{
+		enc_left_flag = 0;
+	}
+	if(enc_right_flag)
+	{
+		enc_right_flag =0;
+	}
+	if(enc_sw_flag)
+	{
+		menu_actual = menu_calibrate_probe_up;
+
+		/*WRITE DOWN ADC VALUE TO VARIABLE*/
+
+		while(!SW_PRESS); //until release button
+		Timer_menu = menu_time;
+		enc_sw_flag = 0;
+	}
 }
 
 void menu_calibrate_probe_up()
 {
+	cli();
+	lcd_cls();
+	lcd_str("  Odczyn 7 pH");
+	lcd_locate(1,6);
+	lcd_str("YYY");
+	sei();
 
+	Timer_menu = menu_time;
+
+	if(enc_left_flag)
+	{
+		enc_left_flag = 0;
+	}
+	if(enc_right_flag)
+	{
+		enc_right_flag =0;
+	}
+	if(enc_sw_flag)
+	{
+		menu_actual = menu_calibrate_probe;
+
+		/*WRITE UP ADC VALUE TO VARIABLE*/
+
+		while(!SW_PRESS); //until release button
+		Timer_menu = menu_time;
+		enc_sw_flag = 0;
+	}
 }
 
 void menu_showing_time()
