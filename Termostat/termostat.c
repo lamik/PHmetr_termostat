@@ -27,7 +27,7 @@ void Termostat_init()
 	termostat_fract = 0;
 	termostat_hist_cel = 1;
 	termostat_hist_fract = 0;
-	termostat_kryt_cel = 30;
+	termostat_kryt_cel = 28;
 	termostat_kryt_fract = 0;
 
 }

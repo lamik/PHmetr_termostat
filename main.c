@@ -22,17 +22,19 @@
 volatile uint8_t Timer_1s;
 
 const uint8_t celsius[] PROGMEM = {7,5,7,32,32,32,32,32};
+const uint8_t l_pol[] PROGMEM = {12,4,6,4,12,4,14,32};
 
 int main(void)
 {
 	LED_DDR |= LED_PIN;
 	lcd_init();
 	lcd_defchar_P(0,celsius);
+	lcd_defchar_P(1,l_pol);
 	_delay_ms(100);
 
 
 	sei();
-	lcd_str("  pH regulator");
+	lcd_str("  Kontroler pH");
 	lcd_locate(1,0);
 	lcd_str("   Termostat");
 	menu_actual = menu_main;

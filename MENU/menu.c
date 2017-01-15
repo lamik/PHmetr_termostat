@@ -27,10 +27,10 @@ void menu_main()
 	lcd_char('.');
 	lcd_int(21);
 	lcd_str("pH");
-	lcd_locate(1,5);
-	if(termostat_state == IDLE) lcd_str("IDLE");
-	if(termostat_state == HEATING) lcd_str("HEATING");
-	if(termostat_state == COOLING) lcd_str("COOLING");
+	lcd_locate(1,0);
+	if(termostat_state == IDLE) lcd_str("Bezczynny");
+	if(termostat_state == HEATING) lcd_str("Grzanie");
+	if(termostat_state == COOLING) {lcd_str("Ch");lcd_char(0x01);lcd_str("odzenie");}
 	sei();
 
 	if(enc_left_flag)
