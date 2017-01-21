@@ -168,6 +168,7 @@ void menu_pH()
 	else lcd_locate(1,6);
 	lcd_int(pH_cel);
 	lcd_char('.');
+	if(pH_fract < 10) lcd_char('0');
 	lcd_int(pH_fract);
 	sei();
 
@@ -261,8 +262,11 @@ void menu_set_pH_fract()
 	lcd_int(pH_cel);
 	lcd_char('.');
 	if(blynk)
-	lcd_int(pH_fract);
-	else lcd_char(' ');
+	{
+		if(pH_fract < 10) lcd_char('0');
+		lcd_int(pH_fract);
+	}
+	else lcd_str("  ");
 	sei();
 
 	if(enc_left_flag)
@@ -277,7 +281,7 @@ void menu_set_pH_fract()
 	}
 	if(enc_right_flag)
 	{
-		if(pH_fract < 9)
+		if(pH_fract < 99)
 		{
 			pH_fract++;
 			eeprom_update_byte(&settings.pH_fract, pH_fract);
@@ -303,6 +307,7 @@ void menu_set_pH_hist()
 	else lcd_locate(1,6);
 	lcd_int(pH_hist_cel);
 	lcd_char('.');
+	if(pH_hist_fract < 10) lcd_char('0');
 	lcd_int(pH_hist_fract);
 	sei();
 
@@ -396,8 +401,11 @@ void menu_set_pH_hist_fract()
 	lcd_int(pH_hist_cel);
 	lcd_char('.');
 	if(blynk)
-	lcd_int(pH_hist_fract);
-	else lcd_char(' ');
+	{
+		if(pH_hist_fract < 10) lcd_char('0');
+		lcd_int(pH_hist_fract);
+	}
+	else lcd_str("  ");
 	sei();
 
 	if(enc_left_flag)
@@ -412,7 +420,7 @@ void menu_set_pH_hist_fract()
 	}
 	if(enc_right_flag)
 	{
-		if(pH_hist_fract < 9)
+		if(pH_hist_fract < 99)
 		{
 			pH_hist_fract++;
 			eeprom_update_byte(&settings.pH_hist_fract, pH_hist_fract);
@@ -438,6 +446,7 @@ void menu_set_pH_kryt()
 	else lcd_locate(1,6);
 	lcd_int(pH_kryt_cel);
 	lcd_char('.');
+	if(pH_kryt_fract < 10) lcd_char('0');
 	lcd_int(pH_kryt_fract);
 	sei();
 
@@ -537,8 +546,11 @@ void menu_set_pH_kryt_fract()
 	lcd_int(pH_kryt_cel);
 	lcd_char('.');
 	if(blynk)
-	lcd_int(pH_kryt_fract);
-	else lcd_char(' ');
+	{
+		if(pH_kryt_fract < 10) lcd_char('0');
+		lcd_int(pH_kryt_fract);
+	}
+	else lcd_str("  ");
 	sei();
 
 	if(enc_left_flag)
