@@ -8,6 +8,9 @@
 #ifndef PH_CONTROL_PH_CONTROL_H_
 #define PH_CONTROL_PH_CONTROL_H_
 
+enum pH_state {IDLE_PH, CO2, O2};
+uint8_t pH_state;
+
 volatile uint8_t Timer_pH;
 
 uint8_t kH_val;
@@ -25,5 +28,6 @@ uint16_t pH_calib_4pH, pH_calib_7pH;
 
 void Ph_controler_init();
 void Ph_controler_get_pH();
+void Ph_controler_control_pH();
 
 #endif /* PH_CONTROL_PH_CONTROL_H_ */

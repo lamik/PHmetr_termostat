@@ -17,6 +17,8 @@ extern TSettings settings;
 
 void Ph_controler_init()
 {
+	pH_state = IDLE_PH;
+
 	//get all saved parameters
 	kH_val = eeprom_read_byte(&(settings.kH));
 	pH_cel = eeprom_read_byte(&(settings.pH_cel));
@@ -63,8 +65,53 @@ void Ph_controler_get_pH()
 		pH_cel_val = pH_ADC_tmp;
 		pH_fracts_val = pH_all % 100;
 
-
 		Timer_pH = 25;
+	}
+}
+
+void Ph_controler_control_pH()
+{
+
+	uint16_t goal_pH_tmp = pH_cel*10+pH_fract;
+
+	uint16_t pH_down = goal_pH_tmp - (pH_hist_cel*10 + pH_hist_fract);
+	uint16_t pH_up = goal_pH_tmp + (pH_hist_cel*10 + pH_hist_fract);
+	uint16_t pH_kryt = pH_kryt_cel*10 + pH_kryt_fract;
+
+	if(pH_state == IDLE_PH)
+	{
+		if(pH_all >= pH_up)
+		{
+			pH_state = CO2;
+
+//			HEATER_ON;
+//			COOLER_OFF;
+		}
+
+		if(pH_all <= pH_kryt)
+		{
+			pH_state = O2;
+//			HEATER_OFF;
+//			COOLER_ON;
+		}
+	}
+	else if(pH_state == CO2)
+	{
+		if(pH_all <= pH_down)
+		{
+			pH_state = IDLE_PH;
+//			HEATER_OFF;
+//			COOLER_OFF;
+		}
+	}
+	else if(pH_state == O2)
+	{
+		if(pH_all >= pH_down)
+		{
+			pH_state = IDLE_PH;
+//			HEATER_OFF;
+//			COOLER_OFF;
+		}
 	}
 }
 
