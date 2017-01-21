@@ -49,11 +49,15 @@ void menu_main()
 /***CO2***/
 	float co2_ppm = 3 * kH_val;
 	co2_ppm *= pow(10,7-pH_float);
-	lcd_locate(1,5);
-	lcd_int( (int)co2_ppm);
+	lcd_locate(1,4);
+	uint16_t co2_ppm_tmp = co2_ppm;
+	if(co2_ppm_tmp < 99) lcd_str(" ");
+	if(co2_ppm_tmp < 9) lcd_str(" ");
+	lcd_int(co2_ppm_tmp);
 	lcd_char('.');
-	co2_ppm *= 100;
-	lcd_int( (int)co2_ppm% 100);
+	co2_ppm *= 10;
+	lcd_int( (int)co2_ppm% 10);
+	lcd_str("ppm");
 
 /***STATES***/
 
