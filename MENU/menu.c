@@ -30,16 +30,18 @@ void menu_main()
 	lcd_char('.');
 	lcd_int(cel_fract_bits);
 	lcd_char(0x00);
-	lcd_str("C    ");
+	lcd_str("C   ");
 /*TODO*/
-lcd_locate(0,7);
-	lcd_int(pH_all);
-//	lcd_int(pH_cel_val);
-//	lcd_char('.');
-//	lcd_int(pH_fracts_val);
+//lcd_locate(0,7);
+//	lcd_int(pH_all);
+	if(pH_cel_val < 10) lcd_char(' ');;
+	lcd_int(pH_cel_val);
+	lcd_char('.');
+	if(pH_fracts_val < 10) lcd_char('0');
+	lcd_int(pH_fracts_val);
 
-	lcd_locate(1,9);
-	lcd_int(pH_ADC_mid);
+//	lcd_locate(1,9);
+//	lcd_int(pH_ADC_mid);
 
 /******/
 	lcd_str("pH");

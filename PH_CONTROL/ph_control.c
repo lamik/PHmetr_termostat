@@ -57,7 +57,12 @@ void Ph_controler_get_pH()
 		float pH_ADC_tmp = abs((3*pH_ADC_mid) - (7*pH_calib_4pH) + (4*pH_calib_7pH));
 
 		pH_ADC_tmp /= tmp;
+
 		pH_all = pH_ADC_tmp*100;
+
+		pH_cel_val = pH_ADC_tmp;
+		pH_fracts_val = pH_all % 100;
+
 
 		Timer_pH = 25;
 	}
