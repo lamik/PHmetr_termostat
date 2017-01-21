@@ -7,6 +7,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <avr/eeprom.h>
+#include <stdlib.h>
 #include <math.h>
 
 #include "menu.h"
@@ -41,15 +42,21 @@ void menu_main()
 	lcd_char('.');
 	if(pH_fracts_val < 10) lcd_char('0');
 	lcd_int(pH_fracts_val);
-
+	lcd_str("pH");
 //	lcd_locate(1,9);
 //	lcd_int(pH_ADC_mid);
 
 /***CO2***/
-
+	float co2_ppm = 3 * kH_val;
+	co2_ppm *= pow(10,7-pH_float);
+	lcd_locate(1,5);
+	lcd_int( (int)co2_ppm);
+	lcd_char('.');
+	co2_ppm *= 100;
+	lcd_int( (int)co2_ppm% 100);
 
 /***STATES***/
-	lcd_str("pH");
+
 	lcd_locate(1,0);
 	if(termostat_state == IDLE) lcd_str("---");
 	if(termostat_state == HEATING) lcd_str("Grz");

@@ -29,6 +29,7 @@ volatile uint8_t Timer_pH;
 uint8_t kH_val;
 uint8_t pH_cel_val;
 uint8_t pH_fracts_val; //actual values
+float pH_float;
 
 uint8_t pH_cel; //set values
 uint8_t pH_fract;

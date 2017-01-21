@@ -62,13 +62,13 @@ void Ph_controler_get_pH()
 		ADCSRA |= (1<<ADSC);
 
 		float tmp = abs(pH_calib_7pH - pH_calib_4pH);
-		float pH_ADC_tmp = abs((3*pH_ADC_mid) - (7*pH_calib_4pH) + (4*pH_calib_7pH));
+		pH_float = abs((3*pH_ADC_mid) - (7*pH_calib_4pH) + (4*pH_calib_7pH));
 
-		pH_ADC_tmp /= tmp;
+		pH_float /= tmp;
 
-		pH_all = pH_ADC_tmp*100;
+		pH_all = pH_float*100;
 
-		pH_cel_val = pH_ADC_tmp;
+		pH_cel_val = pH_float;
 		pH_fracts_val = pH_all % 100;
 
 		Timer_pH = 25;
