@@ -14,7 +14,7 @@
 
 
 extern TSettings settings;
-uint32_t pH_ADC_mid;
+
 uint16_t pH_all;
 
 void Ph_controler_init()

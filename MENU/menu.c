@@ -1150,7 +1150,10 @@ void menu_calibrate_probe_down()
 	lcd_cls();
 	lcd_str("  Odczyn 4 pH");
 	lcd_locate(1,6);
-	lcd_str("XXX");
+	if(pH_ADC_mid < 99) lcd_str(" ");
+	if(pH_ADC_mid < 9) lcd_str(" ");
+	lcd_int(pH_ADC_mid);
+
 	sei();
 
 	Timer_menu = menu_time;
@@ -1168,6 +1171,8 @@ void menu_calibrate_probe_down()
 		menu_actual = menu_calibrate_probe_up;
 
 		/*WRITE DOWN ADC VALUE TO VARIABLE*/
+		pH_calib_4pH = pH_ADC_mid;
+		eeprom_update_word(&settings.pH_calib_4pH, pH_calib_4pH);
 
 		while(!SW_PRESS); //until release button
 		Timer_menu = menu_time;
@@ -1181,7 +1186,9 @@ void menu_calibrate_probe_up()
 	lcd_cls();
 	lcd_str("  Odczyn 7 pH");
 	lcd_locate(1,6);
-	lcd_str("YYY");
+	if(pH_ADC_mid < 99) lcd_str(" ");
+	if(pH_ADC_mid < 9) lcd_str(" ");
+	lcd_int(pH_ADC_mid);
 	sei();
 
 	Timer_menu = menu_time;
@@ -1199,6 +1206,8 @@ void menu_calibrate_probe_up()
 		menu_actual = menu_calibrate_probe;
 
 		/*WRITE UP ADC VALUE TO VARIABLE*/
+		pH_calib_7pH = pH_ADC_mid;
+		eeprom_update_word(&settings.pH_calib_7pH, pH_calib_7pH);
 
 		while(!SW_PRESS); //until release button
 		Timer_menu = menu_time;
