@@ -72,6 +72,7 @@ int main(void)
 			Termostat();
 
 			Ph_controler_get_pH();
+			Ph_controler_control_pH();
 
 			menu_actual();
 

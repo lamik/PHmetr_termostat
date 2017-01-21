@@ -46,9 +46,14 @@ void menu_main()
 /******/
 	lcd_str("pH");
 	lcd_locate(1,0);
-	if(termostat_state == IDLE) lcd_str("Bezczynny");
+	if(termostat_state == IDLE) lcd_str("  --");
 	if(termostat_state == HEATING) lcd_str("Grzanie");
 	if(termostat_state == COOLING) {lcd_str("Ch");lcd_char(0x01);lcd_str("odzenie");}
+
+	lcd_locate(1,11);
+	if(pH_state == IDLE_PH) lcd_str(" --");
+	if(pH_state == CO2) lcd_str("CO2");
+	if(pH_state == O2) lcd_str(" O2");
 	sei();
 
 	if(enc_left_flag)

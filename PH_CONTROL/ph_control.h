@@ -8,6 +8,19 @@
 #ifndef PH_CONTROL_PH_CONTROL_H_
 #define PH_CONTROL_PH_CONTROL_H_
 
+#define CO2_VALVE 			(1<<PC3)
+#define CO2_VALVE_PORT		PORTC
+#define CO2_VALVE_DDR		DDRC
+
+#define O2_VALVE			(1<<PC4)
+#define O2_VALVE_PORT		PORTC
+#define O2_VALVE_DDR		DDRC
+
+#define CO2_VALVE_ON	CO2_VALVE_PORT &= ~CO2_VALVE
+#define CO2_VALVE_OFF	CO2_VALVE_PORT |= CO2_VALVE
+#define O2_VALVE_ON		O2_VALVE_PORT &= ~O2_VALVE
+#define O2_VALVE_OFF	O2_VALVE_PORT |= O2_VALVE
+
 enum pH_state {IDLE_PH, CO2, O2};
 uint8_t pH_state;
 
@@ -16,8 +29,6 @@ volatile uint8_t Timer_pH;
 uint8_t kH_val;
 uint8_t pH_cel_val;
 uint8_t pH_fracts_val; //actual values
-uint16_t pH_all;
-uint32_t pH_ADC_mid;
 
 uint8_t pH_cel; //set values
 uint8_t pH_fract;

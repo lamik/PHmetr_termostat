@@ -14,9 +14,15 @@
 
 
 extern TSettings settings;
+uint32_t pH_ADC_mid;
+uint16_t pH_all;
 
 void Ph_controler_init()
 {
+	CO2_VALVE_DDR |= CO2_VALVE;
+	CO2_VALVE_OFF;
+	O2_VALVE_DDR |= O2_VALVE;
+	O2_VALVE_OFF;
 	pH_state = IDLE_PH;
 
 	//get all saved parameters
@@ -72,27 +78,26 @@ void Ph_controler_get_pH()
 void Ph_controler_control_pH()
 {
 
-	uint16_t goal_pH_tmp = pH_cel*10+pH_fract;
+	uint16_t goal_pH_tmp = pH_cel*100+pH_fract;
 
-	uint16_t pH_down = goal_pH_tmp - (pH_hist_cel*10 + pH_hist_fract);
-	uint16_t pH_up = goal_pH_tmp + (pH_hist_cel*10 + pH_hist_fract);
-	uint16_t pH_kryt = pH_kryt_cel*10 + pH_kryt_fract;
+	uint16_t pH_down = goal_pH_tmp - (pH_hist_cel*100 + pH_hist_fract);
+	uint16_t pH_up = goal_pH_tmp + (pH_hist_cel*100 + pH_hist_fract);
+	uint16_t pH_kryt = pH_kryt_cel*100 + pH_kryt_fract;
 
 	if(pH_state == IDLE_PH)
 	{
 		if(pH_all >= pH_up)
 		{
 			pH_state = CO2;
-
-//			HEATER_ON;
-//			COOLER_OFF;
+			CO2_VALVE_ON;
+			O2_VALVE_OFF;
 		}
 
 		if(pH_all <= pH_kryt)
 		{
 			pH_state = O2;
-//			HEATER_OFF;
-//			COOLER_ON;
+			O2_VALVE_ON;
+			CO2_VALVE_OFF;
 		}
 	}
 	else if(pH_state == CO2)
@@ -100,8 +105,8 @@ void Ph_controler_control_pH()
 		if(pH_all <= pH_down)
 		{
 			pH_state = IDLE_PH;
-//			HEATER_OFF;
-//			COOLER_OFF;
+			CO2_VALVE_OFF;
+			O2_VALVE_OFF;
 		}
 	}
 	else if(pH_state == O2)
@@ -109,8 +114,8 @@ void Ph_controler_control_pH()
 		if(pH_all >= pH_down)
 		{
 			pH_state = IDLE_PH;
-//			HEATER_OFF;
-//			COOLER_OFF;
+			CO2_VALVE_OFF;
+			O2_VALVE_OFF;
 		}
 	}
 }
