@@ -23,6 +23,8 @@ typedef struct Settings{
 	uint8_t pH_hist_fract;
 	uint8_t pH_kryt_cel;
 	uint8_t pH_kryt_fract;
+	uint16_t pH_calib_4pH;
+	uint16_t pH_calib_7pH;
 
 }TSettings;
 

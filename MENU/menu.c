@@ -32,9 +32,15 @@ void menu_main()
 	lcd_char(0x00);
 	lcd_str("C    ");
 /*TODO*/
-	lcd_int(7);
-	lcd_char('.');
-	lcd_int(21);
+lcd_locate(0,7);
+	lcd_int(pH_all);
+//	lcd_int(pH_cel_val);
+//	lcd_char('.');
+//	lcd_int(pH_fracts_val);
+
+	lcd_locate(1,9);
+	lcd_int(pH_ADC_mid);
+
 /******/
 	lcd_str("pH");
 	lcd_locate(1,0);

@@ -30,6 +30,7 @@ extern TSettings settings;
 extern uint16_t menu_time;
 
 const uint8_t celsius[] PROGMEM = {7,5,7,32,32,32,32,32};
+//Polish chars
 const uint8_t l_pol[] PROGMEM = {12,4,6,4,12,4,14,32};
 const uint8_t s_pol[] PROGMEM = {2,4,14,16,14,1,30,32};
 const uint8_t c_pol[] PROGMEM = {2,4,14,16,16,17,14,32};
@@ -70,6 +71,8 @@ int main(void)
 			Termostat_get_temperature();
 			Termostat();
 
+			Ph_controler_get_pH();
+
 			menu_actual();
 
 			if((!Timer_menu) && (menu_actual != menu_main))
@@ -82,6 +85,8 @@ int main(void)
 				LED_ON; //LCD backlight on.
 			}
 			else LED_OFF;
+
+			/*TODO Watchdog*/
 		}
 }
 
@@ -96,6 +101,8 @@ ISR(TIMER0_COMPA_vect)
 	if (n) Timer_menu = --n;
 	n = Timer_blink_option;
 	if (n) Timer_blink_option = --n;
+	n = Timer_pH;
+	if (n) Timer_pH = --n;
 }
 
 

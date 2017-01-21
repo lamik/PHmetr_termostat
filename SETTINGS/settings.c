@@ -24,5 +24,7 @@ TSettings settings EEMEM = { //user values
 	.pH_hist_fract = 2,
 	.pH_kryt_cel = 6,
 	.pH_kryt_fract = 2,
+	.pH_calib_4pH = 667, //theory
+	.pH_calib_7pH = 372 //theory
 };
 

@@ -8,15 +8,22 @@
 #ifndef PH_CONTROL_PH_CONTROL_H_
 #define PH_CONTROL_PH_CONTROL_H_
 
+volatile uint8_t Timer_pH;
+
 uint8_t kH_val;
 uint8_t pH_cel_val;
 uint8_t pH_fracts_val; //actual values
+uint16_t pH_all;
+uint32_t pH_ADC_mid;
 
-uint8_t pH_cel;
-uint8_t pH_fract; //actual values
+uint8_t pH_cel; //set values
+uint8_t pH_fract;
 uint8_t pH_hist_cel, pH_hist_fract;
 uint8_t pH_kryt_cel, pH_kryt_fract;
 
+uint16_t pH_calib_4pH, pH_calib_7pH;
+
 void Ph_controler_init();
+void Ph_controler_get_pH();
 
 #endif /* PH_CONTROL_PH_CONTROL_H_ */
