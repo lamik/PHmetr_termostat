@@ -7,6 +7,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <avr/eeprom.h>
+#include <math.h>
 
 #include "menu.h"
 #include "../LCD_buf/lcd44780.h"
@@ -25,13 +26,14 @@ extern TSettings settings;
 void menu_main()
 {
 	cli();
+/*****Temp******/
 	lcd_cls();
 	lcd_int(cel);
 	lcd_char('.');
 	lcd_int(cel_fract_bits);
 	lcd_char(0x00);
 	lcd_str("C   ");
-/*TODO*/
+/****PH*****/
 //lcd_locate(0,7);
 //	lcd_int(pH_all);
 	if(pH_cel_val < 10) lcd_char(' ');;
@@ -43,15 +45,18 @@ void menu_main()
 //	lcd_locate(1,9);
 //	lcd_int(pH_ADC_mid);
 
-/******/
+/***CO2***/
+
+
+/***STATES***/
 	lcd_str("pH");
 	lcd_locate(1,0);
-	if(termostat_state == IDLE) lcd_str("  --");
-	if(termostat_state == HEATING) lcd_str("Grzanie");
-	if(termostat_state == COOLING) {lcd_str("Ch");lcd_char(0x01);lcd_str("odzenie");}
+	if(termostat_state == IDLE) lcd_str("---");
+	if(termostat_state == HEATING) lcd_str("Grz");
+	if(termostat_state == COOLING) {lcd_str("Ch");lcd_char(0x01);}
 
-	lcd_locate(1,11);
-	if(pH_state == IDLE_PH) lcd_str(" --");
+	lcd_locate(1,13);
+	if(pH_state == IDLE_PH) lcd_str("---");
 	if(pH_state == CO2) lcd_str("CO2");
 	if(pH_state == O2) lcd_str(" O2");
 	sei();
