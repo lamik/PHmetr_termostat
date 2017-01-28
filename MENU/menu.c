@@ -37,11 +37,18 @@ void menu_main()
 /****PH*****/
 //lcd_locate(0,7);
 //	lcd_int(pH_all);
+	if(pH_cel_val < 14)
+	{
 	if(pH_cel_val < 10) lcd_char(' ');;
 	lcd_int(pH_cel_val);
 	lcd_char('.');
 	if(pH_fracts_val < 10) lcd_char('0');
 	lcd_int(pH_fracts_val);
+	}
+	else
+	{
+		lcd_str("!!!!!");
+	}
 	lcd_str("pH");
 //	lcd_locate(1,9);
 //	lcd_int(pH_ADC_mid);
@@ -51,12 +58,19 @@ void menu_main()
 	co2_ppm *= pow(10,7-pH_float);
 	lcd_locate(1,4);
 	uint16_t co2_ppm_tmp = co2_ppm;
+	if(co2_ppm_tmp < 200)
+	{
 	if(co2_ppm_tmp < 99) lcd_str(" ");
 	if(co2_ppm_tmp < 9) lcd_str(" ");
 	lcd_int(co2_ppm_tmp);
 	lcd_char('.');
 	co2_ppm *= 10;
 	lcd_int( (int)co2_ppm% 10);
+	}
+	else
+	{
+		lcd_str("!!!!!");
+	}
 	lcd_str("ppm");
 
 /***STATES***/
