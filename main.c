@@ -66,6 +66,7 @@ int main(void)
 
 	encoder_init(1);
 
+	Timer_menu = menu_time;
 		while(1)
 		{
 			Termostat_get_temperature();
