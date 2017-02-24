@@ -12,7 +12,7 @@
 #define CO2_VALVE_PORT		PORTC
 #define CO2_VALVE_DDR		DDRC
 
-#define O2_VALVE			(1<<PC4)
+#define O2_VALVE			(1<<PC2)
 #define O2_VALVE_PORT		PORTC
 #define O2_VALVE_DDR		DDRC
 

@@ -15,15 +15,15 @@
  *      Author: Mateusz Salamon
  */
 // definicja pinów enkodera
-#define ENC_PH_A 	(1<<PB3)
-#define ENC_PH_B 	(1<<PB2)
-#define ENC_PORT 	PORTB
-#define ENC_PIN		PINB
+#define ENC_PH_A 	(1<<PD3)
+#define ENC_PH_B 	(1<<PD2)
+#define ENC_PORT 	PORTD
+#define ENC_PIN		PIND
 
 // definicja pinu przycisku enkodera
-#define ENC_SW		(1<<PB4)
-#define ENC_SWPORT	PORTB
-#define ENC_SWPIN	PINB
+#define ENC_SW		(1<<PD4)
+#define ENC_SWPORT	PORTD
+#define ENC_SWPIN	PIND
 
 //-----------------------------------
 
