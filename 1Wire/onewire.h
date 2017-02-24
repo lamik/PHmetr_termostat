@@ -24,7 +24,7 @@
 /*******************************************/
 
 /* Wybór PINu oraz PORTu na magistralê 1Wire */
-#define OW_PIN  PC5
+#define OW_PIN  PC0
 #define OW_IN   PINC
 #define OW_OUT  PORTC
 #define OW_DDR  DDRC

@@ -10,11 +10,11 @@
 #include <avr/io.h>
 #include "../DS18X20/ds18x20.h"
 
-#define HEATER  		(1<<PC1)
+#define HEATER  		(1<<PC5)
 #define HEATER_PORT		PORTC
 #define HEATER_DDR		DDRC
 
-#define COOLER 			(1<<PC2)
+#define COOLER 			(1<<PC4)
 #define COOLER_PORT		PORTC
 #define COOLER_DDR		DDRC
 
