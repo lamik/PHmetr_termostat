@@ -16,6 +16,8 @@
 #include "MENU/menu.h"
 #include "PH_CONTROL/ph_control.h"
 #include "SETTINGS/settings.h"
+#include "UART_IRQ/mkuart.h"
+#include "Bluetooth_parse/BT_parse.h"
 
 #define LED_PIN (1<<PB5)
 #define LED_PORT PORTB
@@ -35,6 +37,9 @@ const uint8_t l_pol[] PROGMEM = {12,4,6,4,12,4,14,32};
 const uint8_t s_pol[] PROGMEM = {2,4,14,16,14,1,30,32};
 const uint8_t c_pol[] PROGMEM = {2,4,14,16,16,17,14,32};
 const uint8_t o_pol[] PROGMEM = {2,4,14,17,17,17,14,32};
+
+
+char bufor[100];	// bufor na potrzeby odebranych danych z UART
 
 int main(void)
 {
@@ -67,9 +72,17 @@ int main(void)
 
 	encoder_init(1);
 
+	USART_Init(__UBRR);
+
+	register_uart_str_rx_event_callback( parse_uart_data );
+
+
+	uart_puts("DUPA\r\n");
+
 	Timer_menu = menu_time;
 		while(1)
 		{
+
 			Termostat_get_temperature();
 			Termostat();
 
@@ -90,6 +103,8 @@ int main(void)
 				LED_ON; //LCD backlight on.
 			}
 			else LED_OFF;
+
+			UART_RX_STR_EVENT(bufor);
 
 			/*TODO Watchdog*/
 		}
