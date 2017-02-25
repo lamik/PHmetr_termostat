@@ -7,6 +7,7 @@
 
 #include <avr/io.h>
 #include <avr/pgmspace.h>
+#include <avr/eeprom.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -18,7 +19,7 @@
 #include "../SETTINGS/settings.h"
 
 extern TSettings settings;
-extern uint8_t subzero, cel, cel_fract_bits;	//zmienne temperaturowe
+extern uint8_t cel, cel_fract_bits;	//zmienne temperaturowe
 
 
 
@@ -52,19 +53,24 @@ void parse_uart_data( char * pBuf )
 		char * reszta;
 		uint8_t i=0, len;
 
-		if ( strpbrk(pBuf, "=?"))	{
+		if ( strpbrk(pBuf, "=?"))
+		{
 			// obs³uga poleceñ AT we/wy + parametry
 
-			if ( strpbrk(pBuf, "?"))	{
+			if ( strpbrk(pBuf, "?"))
+			{
 				// zapytania do uk³adu w postaci: AT+CMD?
 
 				cmd_wsk = strtok_r(pBuf, "?", &reszta);
 				len = strlen(cmd_wsk);
-				for(i=0;i<AT_CNT;i++) {
-					if ( len && 0 == strncasecmp_P(cmd_wsk, polecenia_at[i].polecenie_at, len) ) {
+				for(i=0;i<AT_CNT;i++)
+				{
+					if ( len && 0 == strncasecmp_P(cmd_wsk, polecenia_at[i].polecenie_at, len) )
+					{
 						if( pgm_read_word(polecenia_at[i].polecenie_at) ) { // <--- UWAGA! w tekœcie ksi¹¿ki zabrak³o pgm_read_word()
 							_at_srv = (void *)pgm_read_word( &polecenia_at[i].at_service );
-							if( _at_srv) {
+							if( _at_srv)
+							{
 								if( _at_srv( 0, reszta ) < 0 ) uart_puts("ERROR\r\n");
 							}
 						}
@@ -73,14 +79,19 @@ void parse_uart_data( char * pBuf )
 					}
 				}
 
-			} else {
+			}
+			else
+			{
 				// ustawienia uk³adu w postaci: AT+CMD=parametry
 
 				cmd_wsk = strtok_r(pBuf, "=", &reszta);
 				len = strlen(cmd_wsk);
-				for(i=0;i<AT_CNT;i++) {
-					if ( len && 0 == strncasecmp_P(cmd_wsk, polecenia_at[i].polecenie_at, len) ) {
-						if( pgm_read_word(polecenia_at[i].polecenie_at) ) { // <--- UWAGA! w tekœcie ksi¹¿ki zabrak³o pgm_read_word()
+				for(i=0;i<AT_CNT;i++)
+				{
+					if ( len && 0 == strncasecmp_P(cmd_wsk, polecenia_at[i].polecenie_at, len) )
+					{
+						if( pgm_read_word(polecenia_at[i].polecenie_at) )
+						{ // <--- UWAGA! w tekœcie ksi¹¿ki zabrak³o pgm_read_word()
 							_at_srv = (void *)pgm_read_word( &polecenia_at[i].at_service );
 							if( _at_srv && ! _at_srv( 1, reszta ) ) uart_puts("OK\r\n");
 							else uart_puts("ERROR\r\n");
@@ -89,15 +100,20 @@ void parse_uart_data( char * pBuf )
 					}
 				}
 			}
-
-		} else {
+		}
+		else
+		{
 			// obs³uga poleceñ AT bez parametrów
 
 			if( 0 == pBuf[0] ) uart_puts("\r\n");	// reakcja na znak CR lub CRLF z terminala
-			else {
-				for(i=0;i<AT_CNT;i++) {
-					if ( 0 == strncasecmp_P(pBuf, polecenia_at[i].polecenie_at, strlen(pBuf)) ) {
-						if( pgm_read_word(polecenia_at[i].polecenie_at) ) { // <--- UWAGA! w tekœcie ksi¹¿ki zabrak³o pgm_read_word()
+			else
+			{
+				for(i=0;i<AT_CNT;i++)
+				{
+					if ( 0 == strncasecmp_P(pBuf, polecenia_at[i].polecenie_at, strlen(pBuf)) )
+					{
+						if( pgm_read_word(polecenia_at[i].polecenie_at) )
+						{
 							_at_srv = (void *)pgm_read_word( &polecenia_at[i].at_service );
 							if( _at_srv) _at_srv(2,0);
 						}
@@ -184,13 +200,61 @@ int8_t at_inf_service(uint8_t inout, char * params)
 
 int8_t at_kh_service(uint8_t inout, char * params)
 {
+	//	AT+KH
+	if( 1 == inout ) {
+		if(!strlen(params)) return -1;
+		int8_t tmp = atoi(params);
+		if(!(tmp <= 50 &&  tmp >= 0)) return -1;
+		kH_val = atoi(params);
+		eeprom_update_byte(&settings.kH, kH_val);
+	}
+	else if( 2 == inout )
+	{
+		uart_puts("AT+KH = (0-50)\r\n");
+	}
+	else if(!inout)
+	{
+		uart_puts(itoa(kH_val,NULL,10));
+	}
 
 	return 0;
 }
 
 int8_t at_tmp_service(uint8_t inout, char * params)
 {
+	uint8_t cel,fracts;
+	char * wsk;
+	//	AT+TMP
+	if( 1 == inout ) {
+		if(!strlen(params)) return -1;
 
+		wsk = strtok(params, ".");
+		if(!strlen(wsk)) return -1;
+		cel = atoi(wsk);
+		if(!(cel <= 50 &&  cel >= 0)) return -1;
+
+		wsk = strtok(NULL, ",");
+		if(!strlen(wsk)) return -1;
+		fracts = atoi(wsk);
+		if(!(fracts <= 9 &&  fracts >= 0)) return -1;
+
+		termostat_cel = cel;
+		termostat_fract = fracts;
+		eeprom_update_byte(&settings.termostat_cel, termostat_cel);
+		eeprom_update_byte(&settings.termostat_fract, termostat_fract);
+	}
+	else if( 2 == inout )
+	{
+		uart_puts("AT+TMP = (0-50).(0-9)\r\n");
+	}
+	else if(!inout)
+	{
+		uart_puts(itoa(termostat_cel,NULL,10));
+		uart_putc('.');
+		uart_puts(itoa(termostat_fract,NULL,10));
+	}
+
+	return 0;
 	return 0;
 }
 
