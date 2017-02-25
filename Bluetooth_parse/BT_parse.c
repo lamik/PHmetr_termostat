@@ -253,20 +253,78 @@ int8_t at_tmp_service(uint8_t inout, char * params)
 		uart_putc('.');
 		uart_puts(itoa(termostat_fract,NULL,10));
 	}
-
-	return 0;
 	return 0;
 }
 
 int8_t at_tmh_service( uint8_t inout, char * params )
 {
+	uint8_t cel,fracts;
+	char * wsk;
+	//	AT+TMH
+	if( 1 == inout ) {
+		if(!strlen(params)) return -1;
 
+		wsk = strtok(params, ".");
+		if(!strlen(wsk)) return -1;
+		cel = atoi(wsk);
+		if(!(cel <= 50 &&  cel >= 0)) return -1;
+
+		wsk = strtok(NULL, ",");
+		if(!strlen(wsk)) return -1;
+		fracts = atoi(wsk);
+		if(!(fracts <= 9 &&  fracts >= 0)) return -1;
+
+		termostat_hist_cel = cel;
+		termostat_hist_fract = fracts;
+		eeprom_update_byte(&settings.termostat_hist_cel, termostat_hist_cel);
+		eeprom_update_byte(&settings.termostat_hist_fract, termostat_hist_fract);
+	}
+	else if( 2 == inout )
+	{
+		uart_puts("AT+TMH = (0-50).(0-9)\r\n");
+	}
+	else if(!inout)
+	{
+		uart_puts(itoa(termostat_hist_cel,NULL,10));
+		uart_putc('.');
+		uart_puts(itoa(termostat_hist_fract,NULL,10));
+	}
 	return 0;
 }
 
 int8_t at_tmk_service(uint8_t inout, char * params)
 {
+	uint8_t cel,fracts;
+	char * wsk;
+	//	AT+TMK
+	if( 1 == inout ) {
+		if(!strlen(params)) return -1;
 
+		wsk = strtok(params, ".");
+		if(!strlen(wsk)) return -1;
+		cel = atoi(wsk);
+		if(!(cel <= 50 &&  cel >= 0)) return -1;
+
+		wsk = strtok(NULL, ",");
+		if(!strlen(wsk)) return -1;
+		fracts = atoi(wsk);
+		if(!(fracts <= 9 &&  fracts >= 0)) return -1;
+
+		termostat_kryt_cel = cel;
+		termostat_kryt_fract = fracts;
+		eeprom_update_byte(&settings.termostat_kryt_cel, termostat_kryt_cel);
+		eeprom_update_byte(&settings.termostat_kryt_fract, termostat_kryt_fract);
+	}
+	else if( 2 == inout )
+	{
+		uart_puts("AT+TMK = (0-50).(0-9)\r\n");
+	}
+	else if(!inout)
+	{
+		uart_puts(itoa(termostat_kryt_cel,NULL,10));
+		uart_putc('.');
+		uart_puts(itoa(termostat_kryt_fract,NULL,10));
+	}
 	return 0;
 }
 
