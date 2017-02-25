@@ -39,6 +39,8 @@ uint8_t pH_kryt_cel, pH_kryt_fract;
 
 uint16_t pH_calib_4pH, pH_calib_7pH;
 
+uint8_t co2_ppm_int;
+
 void Ph_controler_init();
 void Ph_controler_get_pH();
 void Ph_controler_control_pH();

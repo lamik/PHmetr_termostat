@@ -13,6 +13,13 @@
 #include "../UART_IRQ/mkuart.h"
 #include "BT_parse.h"
 #include "../LCD_buf/lcd44780.h"
+#include "../Termostat/termostat.h"
+#include "../PH_CONTROL/ph_control.h"
+#include "../SETTINGS/settings.h"
+
+extern TSettings settings;
+extern uint8_t subzero, cel, cel_fract_bits;	//zmienne temperaturowe
+
 
 
 #define AT_CNT 	10	// iloæ poleceñ AT
@@ -105,18 +112,72 @@ void parse_uart_data( char * pBuf )
 
 int8_t at_service(uint8_t inout, char * params)
 {
+	// AT
 	uart_puts("OK\r\n");
 	return 0;
 }
 
 int8_t ati_service(uint8_t inout, char * params)
 {
+	//	ATI
 	uart_puts("Mateusz Salamon pH Controller\r\n");
 	return 0;
 }
 
 int8_t at_inf_service(uint8_t inout, char * params)
 {
+	//	AT+INF
+	//	First actual parameters, thes settings
+	//	actual: temperature, pH, states(Thermostat outs, pH outs), CO2 ppm
+	//	settings: KH, ther, therm hist, therm crit, ph, ph hist, ph crit
+	//
+	//	NO info for: menu time, calibration.
+	//
+	//	Message structure:
+	//	+INF:xx.x,xx.xx,x,x,xxx,xx,xx.x,xx.x,xx.x,xx.x,xx.x,xx.x\r
+	char tmp[5];
+
+	uart_puts("+INF:");
+	uart_puts(itoa(cel,tmp,10));
+	uart_putc('.');
+	uart_puts(itoa(cel_fract_bits,tmp,10));
+	uart_putc(',');
+	uart_puts(itoa(pH_cel_val,tmp,10));
+	uart_putc('.');
+	uart_puts(itoa(pH_fracts_val,tmp,10));
+	uart_putc(',');
+	uart_puts(itoa(termostat_state,tmp,10));
+	uart_putc(',');
+	uart_puts(itoa(pH_state,tmp,10));
+	uart_putc(',');
+	uart_puts(itoa(co2_ppm_int,tmp,10));
+	uart_putc(',');
+	uart_puts(itoa(kH_val,tmp,10));
+	uart_putc(',');
+	uart_puts(itoa(termostat_cel,tmp,10));
+	uart_putc('.');
+	uart_puts(itoa(termostat_fract,tmp,10));
+	uart_putc(',');
+	uart_puts(itoa(termostat_hist_cel,tmp,10));
+	uart_putc('.');
+	uart_puts(itoa(termostat_hist_fract,tmp,10));
+	uart_putc(',');
+	uart_puts(itoa(termostat_kryt_cel,tmp,10));
+	uart_putc('.');
+	uart_puts(itoa(termostat_kryt_fract,tmp,10));
+	uart_putc(',');
+	uart_puts(itoa(pH_cel,tmp,10));
+	uart_putc('.');
+	uart_puts(itoa(pH_fract,tmp,10));
+	uart_putc(',');
+	uart_puts(itoa(pH_hist_cel,tmp,10));
+	uart_putc('.');
+	uart_puts(itoa(pH_hist_fract,tmp,10));
+	uart_putc(',');
+	uart_puts(itoa(pH_kryt_cel,tmp,10));
+	uart_putc('.');
+	uart_puts(itoa(pH_kryt_fract,tmp,10));
+	uart_putc('\r');
 
 	return 0;
 }
