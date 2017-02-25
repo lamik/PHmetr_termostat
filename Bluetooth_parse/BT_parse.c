@@ -111,7 +111,7 @@ int8_t at_service(uint8_t inout, char * params)
 
 int8_t ati_service(uint8_t inout, char * params)
 {
-	uart_puts("pH Controller\r\n");
+	uart_puts("Mateusz Salamon pH Controller\r\n");
 	return 0;
 }
 
