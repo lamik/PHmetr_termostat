@@ -76,9 +76,6 @@ int main(void)
 
 	register_uart_str_rx_event_callback( parse_uart_data );
 
-
-	uart_puts("DUPA\r\n");
-
 	Timer_menu = menu_time;
 		while(1)
 		{
