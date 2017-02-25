@@ -39,7 +39,7 @@ const uint8_t o_pol[] PROGMEM = {2,4,14,17,17,17,14,32};
 int main(void)
 {
 	LED_DDR |= LED_PIN;
-	LED_OFF;
+	LED_ON;
 	lcd_init();
 	lcd_defchar_P(0,celsius);
 	lcd_defchar_P(1,l_pol);
