@@ -26,7 +26,7 @@ extern TSettings settings;
 
 void menu_main()
 {
-	cli();
+
 /*****Temp******/
 	lcd_cls();
 	lcd_int(cel);
@@ -84,7 +84,7 @@ void menu_main()
 	if(pH_state == IDLE_PH) lcd_str("---");
 	if(pH_state == CO2) lcd_str("CO2");
 	if(pH_state == O2) lcd_str(" O2");
-	sei();
+
 
 	if(enc_left_flag)
 	{
@@ -108,7 +108,7 @@ void menu_main()
 
 void menu_kH()
 {
-	cli();
+
 	lcd_cls();
 	lcd_str("   Warto");
 	lcd_char(0x02);
@@ -117,7 +117,7 @@ void menu_kH()
 	if(kH_val > 9) lcd_locate(1,6);
 	else lcd_locate(1,7);
 	lcd_int(kH_val);
-	sei();
+
 
 	if(enc_left_flag)
 	{
@@ -148,7 +148,7 @@ void menu_setkH()
 		else blynk = 0;
 		Timer_blink_option = BLINKING;
 	}
-	cli();
+
 	lcd_cls();
 	lcd_str("   Warto");
 	lcd_char(0x02);
@@ -158,7 +158,7 @@ void menu_setkH()
 	else lcd_locate(1,7);
 	if(blynk)
 		lcd_int(kH_val);
-	sei();
+
 
 	if(enc_left_flag)
 	{
@@ -191,7 +191,7 @@ void menu_setkH()
 
 void menu_pH()
 {
-	cli();
+
 	lcd_cls();
 	lcd_str("  Ustalone pH");
 	if(pH_cel>9) lcd_locate(1,5);
@@ -200,7 +200,7 @@ void menu_pH()
 	lcd_char('.');
 	if(pH_fract < 10) lcd_char('0');
 	lcd_int(pH_fract);
-	sei();
+
 
 	if(enc_left_flag)
 	{
@@ -231,7 +231,7 @@ void menu_set_pH_cel()
 		else blynk = 0;
 		Timer_blink_option = BLINKING;
 	}
-	cli();
+
 	lcd_cls();
 	lcd_str("  Ustalone pH");
 	if(pH_cel>9) lcd_locate(1,5);
@@ -245,7 +245,7 @@ void menu_set_pH_cel()
 		}
 	lcd_char('.');
 	lcd_int(pH_fract);
-	sei();
+
 
 	if(enc_left_flag)
 	{
@@ -284,7 +284,7 @@ void menu_set_pH_fract()
 		else blynk = 0;
 		Timer_blink_option = BLINKING;
 	}
-	cli();
+
 	lcd_cls();
 	lcd_str("  Ustalone pH");
 	if(pH_cel>9) lcd_locate(1,5);
@@ -297,7 +297,7 @@ void menu_set_pH_fract()
 		lcd_int(pH_fract);
 	}
 	else lcd_str("  ");
-	sei();
+
 
 	if(enc_left_flag)
 	{
@@ -330,7 +330,7 @@ void menu_set_pH_fract()
 
 void menu_set_pH_hist()
 {
-	cli();
+
 	lcd_cls();
 	lcd_str("  Histereza pH");
 	if(pH_hist_cel>9) lcd_locate(1,5);
@@ -339,7 +339,7 @@ void menu_set_pH_hist()
 	lcd_char('.');
 	if(pH_hist_fract < 10) lcd_char('0');
 	lcd_int(pH_hist_fract);
-	sei();
+
 
 	if(enc_left_flag)
 	{
@@ -370,7 +370,7 @@ void menu_set_pH_hist_cel()
 		else blynk = 0;
 		Timer_blink_option = BLINKING;
 	}
-	cli();
+
 	lcd_cls();
 	lcd_str("  Histereza pH");
 	if(pH_hist_cel>9) lcd_locate(1,5);
@@ -384,7 +384,7 @@ void menu_set_pH_hist_cel()
 		}
 	lcd_char('.');
 	lcd_int(pH_hist_fract);
-	sei();
+
 
 	if(enc_left_flag)
 	{
@@ -423,7 +423,7 @@ void menu_set_pH_hist_fract()
 		else blynk = 0;
 		Timer_blink_option = BLINKING;
 	}
-	cli();
+
 	lcd_cls();
 	lcd_str("  Histereza pH");
 	if(pH_hist_cel>9) lcd_locate(1,5);
@@ -436,7 +436,7 @@ void menu_set_pH_hist_fract()
 		lcd_int(pH_hist_fract);
 	}
 	else lcd_str("  ");
-	sei();
+
 
 	if(enc_left_flag)
 	{
@@ -469,7 +469,7 @@ void menu_set_pH_hist_fract()
 
 void menu_set_pH_kryt()
 {
-	cli();
+
 	lcd_cls();
 	lcd_str("  Krytyczne pH");
 	if(pH_kryt_cel>9) lcd_locate(1,5);
@@ -478,7 +478,7 @@ void menu_set_pH_kryt()
 	lcd_char('.');
 	if(pH_kryt_fract < 10) lcd_char('0');
 	lcd_int(pH_kryt_fract);
-	sei();
+
 
 	if(enc_left_flag)
 	{
@@ -509,7 +509,7 @@ void menu_set_pH_kryt_cel()
 		else blynk = 0;
 		Timer_blink_option = BLINKING;
 	}
-	cli();
+
 	lcd_cls();
 	lcd_str("  Krytyczne pH");
 	if(pH_kryt_cel>9) lcd_locate(1,5);
@@ -523,7 +523,7 @@ void menu_set_pH_kryt_cel()
 		}
 	lcd_char('.');
 	lcd_int(pH_kryt_fract);
-	sei();
+
 
 	if(enc_left_flag)
 	{
@@ -568,7 +568,7 @@ void menu_set_pH_kryt_fract()
 		else blynk = 0;
 		Timer_blink_option = BLINKING;
 	}
-	cli();
+
 	lcd_cls();
 	lcd_str("  Krytyczne pH");
 	if(pH_kryt_cel>9) lcd_locate(1,5);
@@ -581,7 +581,7 @@ void menu_set_pH_kryt_fract()
 		lcd_int(pH_kryt_fract);
 	}
 	else lcd_str("  ");
-	sei();
+
 
 	if(enc_left_flag)
 	{
@@ -619,7 +619,7 @@ void menu_set_pH_kryt_fract()
 
 void menu_temp()
 {
-	cli();
+
 	lcd_cls();
 	lcd_str("Ust. temperatura");
 	if(termostat_cel>9) lcd_locate(1,5);
@@ -629,7 +629,7 @@ void menu_temp()
 	lcd_int(termostat_fract);
 	lcd_char(0x00);
 	lcd_char('C');
-	sei();
+
 
 	if(enc_left_flag)
 	{
@@ -660,7 +660,7 @@ void menu_set_temp_cel()
 		else blynk = 0;
 		Timer_blink_option = BLINKING;
 	}
-	cli();
+
 	lcd_cls();
 	lcd_str("Ust. temperatura");
 	if(termostat_cel>9) lcd_locate(1,5);
@@ -676,7 +676,7 @@ void menu_set_temp_cel()
 	lcd_int(termostat_fract);
 	lcd_char(0x00);
 	lcd_char('C');
-	sei();
+
 
 	if(enc_left_flag)
 	{
@@ -715,7 +715,7 @@ void menu_set_temp_fract()
 		else blynk = 0;
 		Timer_blink_option = BLINKING;
 	}
-	cli();
+
 	lcd_cls();
 	lcd_str("Ust. temperatura");
 	if(termostat_cel>9) lcd_locate(1,5);
@@ -727,7 +727,7 @@ void menu_set_temp_fract()
 	else lcd_char(' ');
 	lcd_char(0x00);
 	lcd_char('C');
-	sei();
+
 
 	if(enc_left_flag)
 	{
@@ -760,7 +760,7 @@ void menu_set_temp_fract()
 
 void menu_temp_hist()
 {
-	cli();
+
 	lcd_cls();
 	lcd_str("Histereza temp.");
 	if(termostat_hist_cel>9) lcd_locate(1,5);
@@ -770,7 +770,7 @@ void menu_temp_hist()
 	lcd_int(termostat_hist_fract);
 	lcd_char(0x00);
 	lcd_char('C');
-	sei();
+
 
 	if(enc_left_flag)
 	{
@@ -801,7 +801,7 @@ void menu_set_temp_hist_cel()
 		else blynk = 0;
 		Timer_blink_option = BLINKING;
 	}
-	cli();
+
 	lcd_cls();
 	lcd_str("Histereza temp.");
 	if(termostat_hist_cel>9) lcd_locate(1,5);
@@ -817,7 +817,7 @@ void menu_set_temp_hist_cel()
 	lcd_int(termostat_hist_fract);
 	lcd_char(0x00);
 	lcd_char('C');
-	sei();
+
 
 	if(enc_left_flag)
 	{
@@ -856,7 +856,7 @@ void menu_set_temp_hist_fract()
 		else blynk = 0;
 		Timer_blink_option = BLINKING;
 	}
-	cli();
+
 	lcd_cls();
 	lcd_str("Histereza temp.");
 	if(termostat_hist_cel>9) lcd_locate(1,5);
@@ -868,7 +868,7 @@ void menu_set_temp_hist_fract()
 	else lcd_char(' ');
 	lcd_char(0x00);
 	lcd_char('C');
-	sei();
+
 
 	if(enc_left_flag)
 	{
@@ -901,7 +901,7 @@ void menu_set_temp_hist_fract()
 
 void menu_temp_kryt()
 {
-	cli();
+
 	lcd_cls();
 	lcd_str("  Kryt. temp.");
 	if(termostat_kryt_cel>9) lcd_locate(1,5);
@@ -911,7 +911,7 @@ void menu_temp_kryt()
 	lcd_int(termostat_kryt_fract);
 	lcd_char(0x00);
 	lcd_char('C');
-	sei();
+
 
 	if(enc_left_flag)
 	{
@@ -942,7 +942,7 @@ void menu_set_temp_kryt_cel()
 		else blynk = 0;
 		Timer_blink_option = BLINKING;
 	}
-	cli();
+
 	lcd_cls();
 	lcd_str("  Kryt. temp.");
 	if(termostat_kryt_cel>9) lcd_locate(1,5);
@@ -958,7 +958,7 @@ void menu_set_temp_kryt_cel()
 	lcd_int(termostat_kryt_fract);
 	lcd_char(0x00);
 	lcd_char('C');
-	sei();
+
 
 	if(enc_left_flag)
 	{
@@ -1002,7 +1002,7 @@ void menu_set_temp_kryt_fract()
 		else blynk = 0;
 		Timer_blink_option = BLINKING;
 	}
-	cli();
+
 	lcd_cls();
 	lcd_str("  Kryt. temp.");
 	if(termostat_kryt_cel>9) lcd_locate(1,5);
@@ -1014,7 +1014,7 @@ void menu_set_temp_kryt_fract()
 	else lcd_char(' ');
 	lcd_char(0x00);
 	lcd_char('C');
-	sei();
+
 
 	if(enc_left_flag)
 	{
@@ -1052,12 +1052,12 @@ void menu_set_temp_kryt_fract()
 
 void menu_calibrate_probe()
 {
-	cli();
+
 	lcd_cls();
 	lcd_str(" ==Kalibracja==");
 	lcd_locate(1,0);
 	lcd_str(" ===sondy pH===");
-	sei();
+
 
 	if(enc_left_flag)
 	{
@@ -1088,7 +1088,7 @@ void menu_calibrate_probe_sure_no()
 		else blynk = 0;
 		Timer_blink_option = BLINKING;
 	}
-	cli();
+
 	lcd_cls();
 	lcd_str(" Jeste");
 	lcd_char(0x02);
@@ -1096,7 +1096,7 @@ void menu_calibrate_probe_sure_no()
 	lcd_locate(1,6);
 	if(blynk)
 		lcd_str("Nie");
-	sei();
+
 
 	if(enc_left_flag)
 	{
@@ -1127,7 +1127,7 @@ void menu_calibrate_probe_sure_yes()
 		else blynk = 0;
 		Timer_blink_option = BLINKING;
 	}
-	cli();
+
 	lcd_cls();
 	lcd_str(" Jeste");
 	lcd_char(0x02);
@@ -1135,7 +1135,7 @@ void menu_calibrate_probe_sure_yes()
 	lcd_locate(1,3);
 	if(blynk)
 		lcd_str("!!!TAK!!!");
-	sei();
+
 
 	if(enc_left_flag)
 	{
@@ -1160,7 +1160,7 @@ void menu_calibrate_probe_sure_yes()
 
 void menu_calibrate_probe_down()
 {
-	cli();
+
 	lcd_cls();
 	lcd_str("  Odczyn 4 pH");
 	lcd_locate(1,6);
@@ -1168,7 +1168,7 @@ void menu_calibrate_probe_down()
 	if(pH_ADC_mid < 9) lcd_str(" ");
 	lcd_int(pH_ADC_mid);
 
-	sei();
+
 
 	Timer_menu = menu_time;
 
@@ -1196,14 +1196,14 @@ void menu_calibrate_probe_down()
 
 void menu_calibrate_probe_up()
 {
-	cli();
+
 	lcd_cls();
 	lcd_str("  Odczyn 7 pH");
 	lcd_locate(1,6);
 	if(pH_ADC_mid < 99) lcd_str(" ");
 	if(pH_ADC_mid < 9) lcd_str(" ");
 	lcd_int(pH_ADC_mid);
-	sei();
+
 
 	Timer_menu = menu_time;
 
@@ -1231,7 +1231,7 @@ void menu_calibrate_probe_up()
 
 void menu_showing_time()
 {
-	cli();
+
 	lcd_cls();
 	lcd_str(" Menu i pod");
 	lcd_char(0x02);
@@ -1240,7 +1240,7 @@ void menu_showing_time()
 	else lcd_locate(1,6);
 	lcd_int(menu_time/100);
 	lcd_str(" sec");
-	sei();
+
 
 	if(enc_left_flag)
 	{
@@ -1271,7 +1271,7 @@ void menu_set_showing_time()
 		else blynk = 0;
 		Timer_blink_option = BLINKING;
 	}
-	cli();
+
 	lcd_cls();
 	lcd_str("   Czas menu");
 	if(menu_time>900) lcd_locate(1,5);
@@ -1284,7 +1284,7 @@ void menu_set_showing_time()
 		else lcd_char(' ');
 	}
 	lcd_str(" sec");
-	sei();
+
 
 	if(enc_left_flag)
 	{
@@ -1318,7 +1318,7 @@ void menu_set_showing_time()
 
 void menu_back_to_main()
 {
-	cli();
+
 	lcd_cls();
 	lcd_str("Powr");
 	lcd_char(0x04);
@@ -1328,7 +1328,7 @@ void menu_back_to_main()
 	lcd_char(0x01);
 	lcd_char(0x04);
 	lcd_str("wnego");
-	sei();
+
 
 	if(enc_left_flag)
 	{

@@ -77,6 +77,8 @@ int main(void)
 
 			menu_actual();
 
+			LCD_EVENT();
+
 			if((!Timer_menu) && (menu_actual != menu_main))
 			{
 				menu_actual = menu_main;

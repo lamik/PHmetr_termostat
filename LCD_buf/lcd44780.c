@@ -436,37 +436,47 @@ void lcd_init(void)
 		TIMSK1 |= (1<<OCIE1A); //Timer start
 }
 
+void LCD_EVENT()
+{
+	if(lcd_event_flag)
+	{
+	uint8_t i,j,y;
+		char znak;
+	//	lcd_write_cmd( LCDC_CLS|LCDC_HOME );
+		for(j=0; j<LCD_Y; j++)
+		{
+			switch(j)
+			{
+			case 0: y = LCD_LINE1; break;
+
+			#if (LCD_Y>1)
+				    case 1: y = LCD_LINE2; break; // adres 1 znaku 2 wiersza
+			#endif
+			#if (LCD_Y>2)
+			    	case 2: y = LCD_LINE3; break; // adres 1 znaku 3 wiersza
+			#endif
+			#if (LCD_Y>3)
+			    	case 3: y = LCD_LINE4; break; // adres 1 znaku 4 wiersza
+			#endif
+			}
+
+			lcd_write_cmd(0x80 + y);
+
+			for(i=0; i<LCD_X; i++)
+			{
+				//send to lcd
+				znak = lcd_buf[j][i];
+				lcd_write_data(znak);
+			}
+		}
+
+		lcd_event_flag = 0;
+	}
+}
+
 ISR(TIMER1_COMPA_vect)
 {
 //	(*(volatile uint8_t *)((0x05) + 0x20)) ^= (1<<5); //debug LED
 
-	uint8_t i,j,y;
-	char znak;
-//	lcd_write_cmd( LCDC_CLS|LCDC_HOME );
-	for(j=0; j<LCD_Y; j++)
-	{
-		switch(j)
-		{
-		case 0: y = LCD_LINE1; break;
-
-		#if (LCD_Y>1)
-			    case 1: y = LCD_LINE2; break; // adres 1 znaku 2 wiersza
-		#endif
-		#if (LCD_Y>2)
-		    	case 2: y = LCD_LINE3; break; // adres 1 znaku 3 wiersza
-		#endif
-		#if (LCD_Y>3)
-		    	case 3: y = LCD_LINE4; break; // adres 1 znaku 4 wiersza
-		#endif
-		}
-
-		lcd_write_cmd(0x80 + y);
-
-		for(i=0; i<LCD_X; i++)
-		{
-			//send to lcd
-			znak = lcd_buf[j][i];
-			lcd_write_data(znak);
-		}
-	}
+	lcd_event_flag = 1;
 }
