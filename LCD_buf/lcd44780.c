@@ -25,6 +25,7 @@
 
 volatile char lcd_buf[LCD_Y][LCD_X];
 volatile uint8_t cur_x, cur_y;
+volatile uint8_t lcd_event_flag = 1;
 
 // makrodefinicje operacji na sygna³ach steruj¹cych RS,RW oraz E
 

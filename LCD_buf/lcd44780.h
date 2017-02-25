@@ -142,8 +142,6 @@
 #define LCDC_SET_CGRAM				0x40
 #define LCDC_SET_DDRAM				0x80
 
-volatile uint8_t lcd_event_flag;
-
 void LCD_EVENT();
 
 // deklaracje funkcji na potrzeby innych modu³ów

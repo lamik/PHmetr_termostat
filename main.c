@@ -53,10 +53,11 @@ int main(void)
 	lcd_str("  Kontroler pH");
 	lcd_locate(1,0);
 	lcd_str("   Termostat");
+	LCD_EVENT();
 	menu_actual = menu_main;
 	Termostat_init();
 	Ph_controler_init();
-	_delay_ms(1000);
+	_delay_ms(2000);
 
 	/*START TIMER0 for time base*/
 	TCCR0A |= (1<<WGM01); //CTC
