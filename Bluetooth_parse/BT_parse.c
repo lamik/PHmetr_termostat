@@ -330,18 +330,109 @@ int8_t at_tmk_service(uint8_t inout, char * params)
 
 int8_t at_php_service(uint8_t inout, char * params)
 {
+	uint8_t cel,fracts;
+	char * wsk;
+	//	AT+PH
+	if( 1 == inout ) {
+		if(!strlen(params)) return -1;
 
+		wsk = strtok(params, ".");
+		if(!strlen(wsk)) return -1;
+		cel = atoi(wsk);
+		if(!(cel <= 14 &&  cel >= 0)) return -1;
+
+		wsk = strtok(NULL, ",");
+		if(!strlen(wsk)) return -1;
+		fracts = atoi(wsk);
+		if(!(fracts <= 99 &&  fracts >= 0)) return -1;
+
+		pH_cel = cel;
+		pH_fract = fracts;
+		eeprom_update_byte(&settings.pH_cel, pH_cel);
+		eeprom_update_byte(&settings.pH_fract, pH_fract);
+	}
+	else if( 2 == inout )
+	{
+		uart_puts("AT+PH = (0-14).(0-99)\r\n");
+	}
+	else if(!inout)
+	{
+		uart_puts(itoa(pH_cel,NULL,10));
+		uart_putc('.');
+		uart_puts(itoa(pH_fract,NULL,10));
+	}
 	return 0;
 }
 
 int8_t at_phh_service(uint8_t inout, char * params)
 {
+	uint8_t cel,fracts;
+	char * wsk;
+	//	AT+PHH
+	if( 1 == inout ) {
+		if(!strlen(params)) return -1;
 
+		wsk = strtok(params, ".");
+		if(!strlen(wsk)) return -1;
+		cel = atoi(wsk);
+		if(!(cel <= 14 &&  cel >= 0)) return -1;
+
+		wsk = strtok(NULL, ",");
+		if(!strlen(wsk)) return -1;
+		fracts = atoi(wsk);
+		if(!(fracts <= 99 &&  fracts >= 0)) return -1;
+
+		pH_hist_cel = cel;
+		pH_hist_fract = fracts;
+		eeprom_update_byte(&settings.pH_hist_cel, pH_hist_cel);
+		eeprom_update_byte(&settings.pH_hist_fract, pH_hist_fract);
+	}
+	else if( 2 == inout )
+	{
+		uart_puts("AT+PHH = (0-14).(0-99)\r\n");
+	}
+	else if(!inout)
+	{
+		uart_puts(itoa(pH_hist_cel,NULL,10));
+		uart_putc('.');
+		uart_puts(itoa(pH_hist_fract,NULL,10));
+	}
 	return 0;
 }
 
 int8_t at_phk_service( uint8_t inout, char * params )
 {
+	uint8_t cel,fracts;
+	char * wsk;
+	//	AT+PHK
+	if( 1 == inout ) {
+		if(!strlen(params)) return -1;
 
+		wsk = strtok(params, ".");
+		if(!strlen(wsk)) return -1;
+		cel = atoi(wsk);
+		if(!(cel <= 14 &&  cel >= 0)) return -1;
+
+		wsk = strtok(NULL, ",");
+		if(!strlen(wsk)) return -1;
+		fracts = atoi(wsk);
+		if(!(fracts <= 99 &&  fracts >= 0)) return -1;
+
+		pH_kryt_cel = cel;
+		pH_kryt_fract = fracts;
+		eeprom_update_byte(&settings.pH_kryt_cel, pH_kryt_cel);
+		eeprom_update_byte(&settings.pH_kryt_fract, pH_kryt_fract);
+	}
+	else if( 2 == inout )
+	{
+		uart_puts("AT+PHK = (0-14).(0-99)\r\n");
+	}
+	else if(!inout)
+	{
+		uart_puts(itoa(pH_kryt_cel,NULL,10));
+		uart_putc('.');
+		uart_puts(itoa(pH_kryt_fract,NULL,10));
+	}
+	return 0;
 	return 0;
 }
