@@ -39,7 +39,7 @@ void Ph_controler_init()
 	//Init ADC for measurement
 	ADCSRA |= (1<<ADEN);  //ADC Enable
 	ADCSRA |= (1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0); //prescaler se to 128 - 125kHz ADC clock
-	ADMUX |= (1<<REFS0); //Vcc as ref voltage, channel ADC0
+	ADMUX |= (1<<REFS0)|(1<<MUX0); //Vcc as ref voltage, channel ADC1
 	ADCSRA |= (1<<ADSC);  //ADC Start Conversion, ADC is in Free Running Mode - always start new conversion when old is read
 
 }
