@@ -46,6 +46,10 @@
 *.mod*
 *.cmd
 
+# Archives
+*.zip
+*.rar
+
 #Eclipse outputs
 Release/*
 Debug/*
