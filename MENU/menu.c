@@ -63,6 +63,7 @@ void menu_main()
 	if(co2_ppm_tmp < 99) lcd_str(" ");
 	if(co2_ppm_tmp < 9) lcd_str(" ");
 	lcd_int(co2_ppm_tmp);
+	co2_ppm_int = co2_ppm_tmp;
 	lcd_char('.');
 	co2_ppm *= 10;
 	lcd_int( (int)co2_ppm% 10);
@@ -70,6 +71,7 @@ void menu_main()
 	else
 	{
 		lcd_str("!!!!!");
+		co2_ppm_int = 200;
 	}
 	lcd_str("ppm");
 
